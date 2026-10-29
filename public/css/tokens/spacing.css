@@ -1,0 +1,27 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — DESIGN TOKENS: SPACING & HERO GEOMETRY
+   ============================================================================= */
+
+:root {
+  /* Spacing Scale (4, 8, 12, 16, 24, 32, 48, 64, 96px) */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+
+
+  /* Hero subtle background mark controls (customizable) */
+  --hero-logo-size: clamp(560px, 48vw, 760px);
+  --hero-logo-opacity: 0.09;
+  --hero-logo-top: 48%;
+  --hero-logo-right: -60px;
+  --hero-logo-bottom: auto;
+  --hero-logo-left: auto;
+  --hero-logo-transform: translateY(-50%);
+
+}

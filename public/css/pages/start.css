@@ -1,0 +1,196 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — ENQUIRY PAGE & FORM LAYOUT
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   15. FORM CONTROLS & ENQUIRY PAGE
+   ----------------------------------------------------------------------------- */
+.start-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 84px;
+  padding-top: 64px;
+  padding-bottom: 72px;
+}
+
+.start-intro .eyebrow {
+  font-size: 10px;
+  margin-bottom: 24px;
+  letter-spacing: 0.2em;
+}
+
+.start-intro h1 {
+  font-size: clamp(52px, 6.2vw, 86px);
+}
+
+.start-intro>p:not(.eyebrow) {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--color-muted);
+  margin-top: 24px;
+}
+
+.what-next {
+  margin-top: 44px;
+  max-width: 360px;
+}
+
+.what-next h3 {
+  font-size: 15px;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.what-next>div {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.what-next>div>span {
+  font-size: 11px;
+  font-family: monospace;
+  color: var(--color-ice);
+}
+
+.what-next p {
+  font-size: 13px;
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+
+.direct-contact {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  font-size: 13px;
+}
+
+.direct-contact>span {
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.direct-contact>a {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.direct-contact>a:hover {
+  color: var(--color-ice);
+}
+
+.start-form-wrap {
+  padding-top: 4px;
+}
+
+.enquiry-form {
+  padding: 34px 32px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  position: relative;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 20px;
+}
+
+.form-grid>label,
+.admin-form label,
+.studio-fields>label,
+.package-editor label,
+
+.selected-package {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 22px;
+  margin-bottom: 26px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}
+
+.selected-package strong {
+  display: block;
+  color: var(--color-text);
+  font-size: 15px;
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+
+.selected-package>a {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+.selected-package>a:hover {
+  color: var(--color-text);
+}
+
+.form-success {
+  padding: 56px 32px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.success-mark {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--color-ice);
+  background: rgba(237, 248, 255, 0.08);
+  color: var(--color-ice);
+  display: grid;
+  place-items: center;
+  margin-bottom: 28px;
+}
+
+.form-success .eyebrow {
+  font-size: 10px;
+  color: var(--color-muted);
+}
+
+.form-success h2 {
+  font-size: 52px;
+  line-height: 1;
+  margin-block: 22px;
+}
+
+.form-success>p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--color-muted);
+  max-width: 360px;
+  line-height: 1.8;
+}
+
+.form-success .reference {
+  font-family: monospace;
+  font-size: 12px !important;
+  margin-top: 22px;
+  color: var(--color-ice) !important;
+}
+
+.form-success .button {
+  margin-top: 32px;
+}
+

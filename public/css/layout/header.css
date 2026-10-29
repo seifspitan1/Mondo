@@ -1,0 +1,73 @@
+/* -----------------------------------------------------------------------------
+   12. HEADER & NAVIGATION
+   ----------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(8, 9, 11, 0.94);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-row {
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 35px;
+  background-color: var(--color-border);
+}
+
+.brand-wordmark {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand>span:not(.brand-divider) {
+  display: inline-flex;
+  align-items: center;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
+  margin-right: 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.main-nav>a:hover {
+  color: var(--color-text);
+}
+
+.mobile-cta,
+.menu-toggle {
+  display: none;
+}
+

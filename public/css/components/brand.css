@@ -1,0 +1,69 @@
+/* -----------------------------------------------------------------------------
+   20. BRAND MARK SYSTEM
+   ----------------------------------------------------------------------------- */
+/* Shared base for all logo mark instances */
+.mondo-mark {
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+  user-select: none;
+  aspect-ratio: 633 / 861;
+}
+
+/* Compact level: ~22-28px — eyebrows, tags */
+.mondo-mark--compact {
+  height: 24px;
+  width: auto;
+  opacity: 0.90;
+}
+
+/* Signature level: ~36-44px — section headings, card info */
+.mondo-mark--signature {
+  height: 38px;
+  width: auto;
+  opacity: 0.92;
+}
+
+/* Persistent level: ~48-56px — header */
+.mondo-mark--persistent {
+  height: 52px;
+  width: auto;
+  opacity: 1;
+}
+
+/* Moment level: ~220-280px — intro, closing area */
+.mondo-mark--moment {
+  height: 240px;
+  width: auto;
+  opacity: 0.92;
+}
+
+/* Section heading signatures */
+.section-signature {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 14px;
+  vertical-align: middle;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.section-signature .mondo-mark {
+  height: 38px;
+  width: auto;
+  opacity: 0.92;
+}
+
+/* Logo placement in eyebrow lines */
+.eyebrow-with-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow-with-mark .mondo-mark {
+  height: 22px;
+  width: auto;
+  opacity: 0.90;
+}
+

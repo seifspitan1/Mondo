@@ -1,0 +1,115 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — PROJECT DETAIL VIEW
+   ============================================================================= */
+
+.project-intro {
+  padding-top: 48px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+.back-link:hover {
+  color: var(--color-text);
+}
+
+.project-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 36px;
+}
+
+.project-title-row .eyebrow {
+  font-size: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.outline-tag {
+  font-size: 9px !important;
+  line-height: 1;
+  padding: 5px 8px;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted) !important;
+  letter-spacing: 0.12em !important;
+}
+
+.project-title-row h1 {
+  font-size: clamp(38px, 5vw, 72px);
+  letter-spacing: -0.04em;
+}
+
+.project-title-row .button {
+  font-size: 13px;
+  min-height: 48px;
+  padding: 12px 28px;
+  flex-shrink: 0;
+}
+
+.project-large-media {
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  background: #060708;
+}
+
+.project-large-media>img,
+.project-video {
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+.project-story {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 96px;
+  padding: 56px 0 0;
+}
+
+.project-story .eyebrow {
+  font-size: 10px;
+  margin-bottom: 18px;
+  color: var(--color-muted);
+}
+
+.project-story h2 {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.concept-note {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: 24px;
+  line-height: 1.8;
+  max-width: 440px;
+}
+
+.project-facts>div {
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-facts h3 {
+  font-size: 13px;
+  letter-spacing: 0;
+  margin-bottom: 10px;
+}
+
+.project-facts p {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--color-muted);
+}

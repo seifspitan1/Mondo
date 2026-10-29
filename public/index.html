@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MONDO — Game Creative Studio</title>
+  <meta name="description"
+    content="Game thumbnails and trailers built around what makes your game worth playing. Make your game the next click with MONDO." />
+  <meta property="og:title" content="MONDO — Make your game the next click." />
+  <meta property="og:description" content="Game thumbnails and trailers. Big ideas, built around your game." />
+  <meta property="og:image" content="/assets/rainbow-orchard.webp" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="/assets/mondo-mark.webp" type="image/webp" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script>
+    try {
+      if (!sessionStorage.getItem('mondo_intro_shown') &&
+          !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+          !window.location.pathname.startsWith('/admin')) {
+        document.documentElement.classList.add('has-intro');
+      }
+    } catch (_) {}
+  </script>
+</head>
+
+<body class="antialiased">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Loading Introduction — once per session, hidden by default -->
+  <div class="mondo-intro" id="mondo-intro" aria-hidden="true">
+    <img
+      src="/assets/mondo-mark.webp"
+      alt=""
+      class="mondo-intro__logo"
+      width="150"
+      height="204"
+      aria-hidden="true"
+    />
+  </div>
+
+  <header class="site-header">
+    <div class="container nav-row">
+      <a class="brand" href="/" aria-label="MONDO home">
+        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="42" height="60" />
+        <span class="brand-divider" aria-hidden="true"></span>
+        <img src="/assets/mondo-wordmark.svg" alt="MONDO" class="brand-wordmark" width="165" height="35" />
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="/work">Work</a>
+        <a href="/#services">Services</a>
+        <a href="/#packages">Packages</a>
+        <a href="/#process">Process</a>
+        <a class="button button-small mobile-cta" href="/start">
+          Start a project
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg>
+        </a>
+      </nav>
+
+      <a class="button button-small desktop-cta" href="/start">
+        Start a project
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 7h10v10" />
+          <path d="M7 17 17 7" />
+        </svg>
+      </a>
+
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <!-- Hero Section (Compact first-screen viewport fit) -->
+    <section class="hero">
+      <div class="hero-bg-mark" aria-hidden="true">
+        <img src="/assets/mondo-mark.webp" alt="" class="hero-bg-logo" width="633" height="861" decoding="async" />
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-with-mark">
+          <img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--compact" width="18" height="24" aria-hidden="true" />
+          <span class="lime-dot"></span> GAME CREATIVE STUDIO
+        </p>
+        <h1>Make your<br />game the<br /><span>next click.</span></h1>
+        <p class="hero-description">Thumbnails and trailers built around what makes your game worth playing.</p>
+        <div class="hero-actions">
+          <a class="button" href="/start">
+            Start a project
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </a>
+          <a class="button button-outline" href="/work">Explore our work</a>
+        </div>
+        <div class="hero-footnote"><span class="small-rule"></span> BIG IDEAS. BUILT FOR GAMES.</div>
+      </div>
+
+      <div class="hero-art">
+        <div class="hero-glow"></div>
+        <a class="hero-frame hero-frame-1" href="/work/rainbow-orchard" aria-label="Explore Rainbow Orchard">
+          <img src="/assets/rainbow-orchard.webp"
+            srcset="/assets/rainbow-orchard-small.webp 800w, /assets/rainbow-orchard.webp 1600w"
+            sizes="(max-width: 650px) 100vw, 50vw" alt="Rainbow Orchard" width="1600" height="900" loading="eager"
+            decoding="async" />
+          <div class="hero-frame-caption">
+            <span>Rainbow Orchard</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+        <a class="hero-frame hero-frame-2" href="/work/cat-battle" aria-label="Explore Cat Battles">
+          <img src="/assets/cat-battle.webp" srcset="/assets/cat-battle-small.webp 800w, /assets/cat-battle.webp 1600w"
+            sizes="(max-width: 650px) 100vw, 50vw" alt="Cat Battles" width="1600" height="900" loading="eager"
+            decoding="async" />
+          <div class="hero-frame-caption">
+            <span>Cat Battles</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+        <a class="hero-frame hero-frame-3" href="/work/cosmic-egg" aria-label="Explore The Cosmic Upgrade">
+          <img src="/assets/cosmic-egg.webp" srcset="/assets/cosmic-egg-small.webp 800w, /assets/cosmic-egg.webp 1600w"
+            sizes="(max-width: 650px) 100vw, 50vw" alt="The Cosmic Upgrade" width="1600" height="900" loading="eager"
+            decoding="async" />
+          <div class="hero-frame-caption">
+            <span>The Cosmic Upgrade</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+        <div class="hero-art-note">
+          <span class="lime-dot"></span> A DIFFERENT KIND OF FIRST IMPRESSION
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m7 7 10 10" />
+            <path d="M17 7v10H7" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discipline Bar -->
+    <div class="discipline-bar">
+      <span>CREATIVE THAT GETS YOUR GAME.</span>
+      <div>
+        <span>GAME THUMBNAILS</span>
+        <span class="lime-star">✳</span>
+        <span>GAME TRAILERS</span>
+        <span class="lime-star">✳</span>
+        <span>CREATIVE TESTING</span>
+      </div>
+    </div>
+
+    <!-- Selected Work Section -->
+    <section id="work" class="section selected-work">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span>01</span> SELECTED WORK</p>
+          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>Big on first<br />impressions.</h2>
+        </div>
+        <a class="text-link" href="/work">
+          Explore all work
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="work-toolbar">
+        <span class="muted">A few things we’ve been creating.</span>
+        <div class="filter-list" role="group" aria-label="Filter projects">
+          <button class="active" aria-pressed="true" data-filter="All">All</button>
+          <button aria-pressed="false" data-filter="Thumbnails">Thumbnails</button>
+          <button aria-pressed="false" data-filter="Trailers">Trailers</button>
+        </div>
+      </div>
+
+      <div class="work-grid" id="selected-work-grid">
+        <!-- Rendered statically and hydrated -->
+        <a class="project-card" href="/work/rainbow-orchard">
+          <div class="project-cover">
+            <img src="/assets/rainbow-orchard.webp"
+              srcset="/assets/rainbow-orchard-small.webp 800w, /assets/rainbow-orchard.webp 1600w"
+              sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
+              alt="Rainbow Orchard — thumbnails creative" width="1600" height="900" loading="eager" decoding="async" />
+            <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg></span>
+            <span class="concept-label">CONCEPT</span>
+          </div>
+          <div class="project-meta">
+            <div>
+              <h3>Rainbow Orchard</h3>
+              <p>Game thumbnail</p>
+            </div>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+
+        <a class="project-card" href="/work/cat-battle">
+          <div class="project-cover">
+            <img src="/assets/cat-battle.webp"
+              srcset="/assets/cat-battle-small.webp 800w, /assets/cat-battle.webp 1600w"
+              sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw" alt="Cat Battles — thumbnails creative"
+              width="1600" height="900" loading="eager" decoding="async" />
+            <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg></span>
+            <span class="concept-label">CONCEPT</span>
+          </div>
+          <div class="project-meta">
+            <div>
+              <h3>Cat Battles</h3>
+              <p>Game thumbnail</p>
+            </div>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+
+        <a class="project-card" href="/work/cosmic-egg">
+          <div class="project-cover">
+            <img src="/assets/cosmic-egg.webp"
+              srcset="/assets/cosmic-egg-small.webp 800w, /assets/cosmic-egg.webp 1600w"
+              sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
+              alt="The Cosmic Upgrade — thumbnails creative" width="1600" height="900" loading="eager"
+              decoding="async" />
+            <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg></span>
+            <span class="concept-label">CONCEPT</span>
+          </div>
+          <div class="project-meta">
+            <div>
+              <h3>The Cosmic Upgrade</h3>
+              <p>Game thumbnail</p>
+            </div>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section services-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span>02</span> WHAT WE DO</p>
+          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>Built around<br />your game.</h2>
+        </div>
+        <p class="section-description">
+          The big idea, the right angle, the feeling.<br />
+          We turn what makes your game special<br />
+          into creative people want to click.
+        </p>
+      </div>
+
+      <div class="services-list">
+        <a class="service-row" href="/start?service=Game%20Thumbnails">
+          <span class="service-number">01</span>
+          <div class="service-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+            </svg>
+            <h3>Game Thumbnails</h3>
+          </div>
+          <div class="service-copy">
+            <h4>One frame. A whole reason to play.</h4>
+            <p>Clear concepts, expressive characters, and compositions that communicate your game at a glance.</p>
+          </div>
+          <span class="service-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </span>
+        </a>
+
+        <a class="service-row" href="/start?service=Game%20Trailers">
+          <span class="service-number">02</span>
+          <div class="service-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M20.2 6 3 11l-.9-2.4c-.4-1.1.2-2.3 1.3-2.7l13.7-4.1c1.1-.3 2.3.2 2.7 1.3l.4 1.9Z" />
+              <path d="m6.2 5.3 3.1 3.9" />
+              <path d="m12.4 3.4 3.1 4" />
+              <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+            </svg>
+            <h3>Game Trailers</h3>
+          </div>
+          <div class="service-copy">
+            <h4>Show the fun. Build the anticipation.</h4>
+            <p>From the first hook to the final frame: creative direction, gameplay storytelling, editing, and sound
+              scoped to your game.</p>
+          </div>
+          <span class="service-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </span>
+        </a>
+
+        <a class="service-row" href="/start?service=Creative%20Testing">
+          <span class="service-number">03</span>
+          <div class="service-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <line x1="18" x2="18" y1="20" y2="10" />
+              <line x1="12" x2="12" y1="20" y2="4" />
+              <line x1="6" x2="6" y1="20" y2="14" />
+            </svg>
+            <h3>Creative Testing</h3>
+          </div>
+          <div class="service-copy">
+            <h4>Find the idea your players respond to.</h4>
+            <p>Explore distinct hooks and visual directions, then use the performance data you share to plan the next
+              creative round.</p>
+          </div>
+          <span class="service-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section process-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span>03</span> THE PROCESS</p>
+          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>From gameplay<br />to great creative.</h2>
+        </div>
+        <p class="section-description">
+          A clear direction from the first conversation<br />
+          to the final export. Here’s how we get there.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        <article>
+          <div class="step-top">
+            <span>01</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+          <h3>Understand</h3>
+          <p>We get to know your game, its players, and what makes it fun.</p>
+        </article>
+
+        <article>
+          <div class="step-top">
+            <span>02</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+          <h3>Find the hook</h3>
+          <p>We shape a creative direction around your strongest idea.</p>
+        </article>
+
+        <article>
+          <div class="step-top">
+            <span>03</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+          <h3>Bring it to life</h3>
+          <p>We build the scene, tell the story, and refine the details.</p>
+        </article>
+
+        <article>
+          <div class="step-top">
+            <span>04</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </div>
+          <h3>Make your move</h3>
+          <p>You get the agreed assets, ready for your next launch or update.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section faq-section">
+      <div>
+        <p class="eyebrow"><span>04</span> BEFORE WE CREATE</p>
+        <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>Good questions.<br />Clear answers.</h2>
+        <p class="muted">Have something else in mind?</p>
+        <a href="/start" class="text-link">
+          Let’s talk about it
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="faq-list">
+        <details>
+          <summary>What do you need to get started? <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>Send your game link or a description of the core gameplay, the assets you need, and any references. If your
+            game is not live yet, a short overview is enough to start the conversation.</p>
+        </details>
+        <details>
+          <summary>Can I order a thumbnail or trailer on its own? <svg width="19" height="19" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>Yes. Individual thumbnails and game trailers are available alongside launch packs and ongoing creative
+            plans. Tell us what you need and we’ll scope the project with you.</p>
+        </details>
+        <details>
+          <summary>How do the monthly plans work? <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>Each plan pairs a weekly thumbnail allowance with a monthly trailer allowance. The creative calendar,
+            trailer length, revisions, and asset requirements are agreed before work begins.</p>
+        </details>
+        <details>
+          <summary>What about delivery times and revisions? <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>Delivery dates and included revision rounds are confirmed in your project quote. Scope and timing depend on
+            the creative direction, available assets, and the number of deliverables.</p>
+        </details>
+        <details>
+          <summary>Do you capture gameplay or use my footage? <svg width="19" height="19" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>We agree on the capture approach in the brief. Let us know whether you already have footage, game access,
+            character rigs, and other assets so the quote covers the work you need.</p>
+        </details>
+        <details>
+          <summary>Can you guarantee performance? <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg></summary>
+          <p>Creative work is designed to attract the right attention. Results also depend on your audience,
+            distribution, and game experience. When you share testing data, we can use it to inform future concepts.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Packages Section (After BEFORE WE CREATE FAQ) -->
+    <section id="packages" class="section packages-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span>05</span> PACKAGES &amp; PRICING</p>
+          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>Choose your<br class="desktop-break" /> next move.</h2>
+        </div>
+        <div class="package-heading-aside">
+          <p>A launch. A new direction. A steady flow of ideas.<br />There’s a MONDO plan for your game.</p>
+          <div class="segmented" role="group" aria-label="Package type">
+            <button class="active" aria-pressed="true">One-off projects</button>
+            <button aria-pressed="false">Monthly plans <span>↗</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="packages-grid" id="packages-grid">
+        <!-- Default One-off packages -->
+        <article class="package-card">
+          <div class="package-topline">
+            <span>01 / PROJECT</span>
+          </div>
+          <h3>MONDO LAB</h3>
+          <p>Find your strongest hook.</p>
+          <div class="package-price">Request a quote<span>per creative pack</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>3 distinct thumbnail concepts</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>Export-ready images</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>Creative direction & review</li>
+          </ul>
+          <a class="button button-outline" href="/start?service=Game%20Thumbnails&package=MONDO%20LAB">
+            Let’s talk LAB <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </a>
+        </article>
+
+        <article class="package-card highlighted">
+          <div class="package-topline">
+            <span>02 / PROJECT</span>
+            <span class="package-badge">READY TO LAUNCH</span>
+          </div>
+          <h3>MONDO LAUNCH</h3>
+          <p>Make your next release an event.</p>
+          <div class="package-price">Request a quote<span>per project</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>1 game trailer</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>3 thumbnail concepts</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>Social cutdowns scoped to your launch</li>
+          </ul>
+          <a class="button" href="/start?service=Launch%20Pack&package=MONDO%20LAUNCH">
+            Let’s talk LAUNCH <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </a>
+        </article>
+
+        <article class="package-card">
+          <div class="package-topline">
+            <span>03 / PROJECT</span>
+          </div>
+          <h3>YOUR NEXT MOVE</h3>
+          <p>A scope that fits your game.</p>
+          <div class="package-price">Let’s talk<span>custom project</span></div>
+          <ul>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>Individual thumbnails or trailers</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>Launch & update visuals</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>A brief built around your goals</li>
+          </ul>
+          <a class="button button-outline" href="/start?service=Custom%20Project&package=YOUR%20NEXT%20MOVE">
+            Let’s talk creative <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M7 7h10v10" />
+              <path d="M7 17 17 7" />
+            </svg>
+          </a>
+        </article>
+      </div>
+
+      <p class="package-note">
+        Every scope is agreed before we create.
+        <a href="/start">Need something different? Let’s talk. <svg width="13" height="13" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg></a>
+      </p>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+      <div>
+        <p class="eyebrow"><span class="lime-dot"></span> YOUR NEXT CHAPTER</p>
+        <h2>Got a game<br />worth showing?</h2>
+        <a class="button" href="/start">
+          Let’s make it stand out
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg>
+        </a>
+      </div>
+      <div class="cta-art" aria-hidden="true">
+        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" width="400" height="570" />
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <!-- Integrated Footer Background Mark -->
+    <div class="footer-bg-mark" aria-hidden="true">
+      <img src="/assets/mondo-mark.webp" alt="" class="footer-bg-logo" width="633" height="861" decoding="async" />
+    </div>
+    <div class="footer-top">
+      <div>
+        <a class="brand" href="/" aria-label="MONDO home">
+          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="28" height="40" />
+          <span class="brand-divider" aria-hidden="true"></span>
+          <img src="/assets/mondo-wordmark.svg" alt="MONDO" class="brand-wordmark" width="95" height="20" />
+        </a>
+        <p>Good games deserve<br />great first impressions.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/work">Our work</a>
+        <a href="/#packages">Packages</a>
+        <a href="/start">Start a project <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M7 7h10v10" />
+            <path d="M7 17 17 7" />
+          </svg></a>
+      </div>
+      <div class="footer-links footer-social-links">
+        <a href="/privacy">Privacy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year">2026</span> MONDO. Game Creative Studio.</span>
+      <span>Made for the next click.</span>
+      <a href="/admin">Studio access <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M7 7h10v10" />
+          <path d="M7 17 17 7" />
+        </svg></a>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/intro.js"></script>
+  <script type="module" src="/js/site.js"></script>
+  <script type="module" src="/js/home.js"></script>
+</body>
+
+</html>

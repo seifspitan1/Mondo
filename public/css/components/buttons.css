@@ -1,0 +1,235 @@
+/* -----------------------------------------------------------------------------
+   5. BUTTONS (PRIMARY, SECONDARY, STATES)
+   ----------------------------------------------------------------------------- */
+/* Shared button primitive & Kit class compatibility */
+.button,
+.mondo-button {
+  --control-h: 58px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  isolation: isolate;
+  min-height: var(--control-h);
+  max-width: 100%;
+  padding: 12px 55px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  transition: filter 0.16s ease-out, transform 0.16s ease-out;
+}
+
+/* Primary left facet module (49x58) */
+.button::before,
+.mondo-button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: calc(var(--control-h) * 49 / 58);
+  background: url('/assets/facet-button-left.svg') no-repeat left top / contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Primary right facet module (46x58) */
+.button::after,
+.mondo-button::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: calc(var(--control-h) * 46 / 58);
+  background: url('/assets/facet-button-right.svg') no-repeat right top / contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.button:hover,
+.mondo-button:hover {
+  filter: drop-shadow(0 0 6px rgba(217, 240, 255, 0.40));
+}
+
+.button:active,
+.mondo-button:active {
+  transform: translateY(1px);
+}
+
+.button:focus-visible,
+.mondo-button:focus-visible {
+  outline: 2px solid var(--color-ice);
+  outline-offset: 4px;
+}
+
+.button:disabled,
+.button[aria-disabled="true"],
+.mondo-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+/* Secondary Button (quieter, 36x50 leading module, quiet contour trailing edge) */
+.button-outline,
+.mondo-button--secondary {
+  --control-h: 50px;
+  min-height: var(--control-h);
+  padding-block: 12px;
+  padding-inline: 48px 23px;
+  background-color: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-right: none;
+  border-left: none;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+}
+
+.button-outline::before,
+.mondo-button--secondary::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: calc(var(--control-h) * 36 / 50);
+  background: url('/assets/facet-button-secondary-left.svg') no-repeat left top / contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.button-outline::after,
+.mondo-button--secondary::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(245,247,250,0.45)'/%3E%3C/svg%3E") no-repeat right top / contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.button-outline:hover,
+.mondo-button--secondary:hover {
+  background-color: rgba(245, 247, 250, 0.04);
+  border-color: var(--color-border-hover);
+  filter: drop-shadow(0 0 6px rgba(217, 240, 255, 0.28));
+}
+
+.button-outline:hover::after,
+.mondo-button--secondary:hover::after {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(237,248,255,0.75)'/%3E%3C/svg%3E") no-repeat right top / contain;
+}
+
+/* Small button variant for headers, toolbars */
+.button-small {
+  --control-h: 44px;
+  min-height: var(--control-h);
+  padding-block: 8px;
+  padding-inline: 42px;
+  font-size: 13px;
+  clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 11px);
+}
+
+.button-small::before {
+  width: calc(var(--control-h) * 49 / 58);
+}
+
+.button-small::after {
+  width: calc(var(--control-h) * 46 / 58);
+}
+
+/* Explicit kit child-layer compatibility if used in templates */
+.mondo-button__surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-bg);
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+}
+
+.mondo-button__rails {
+  position: absolute;
+  inset: 1px 35px;
+  z-index: -1;
+  border-block: 1px solid var(--color-text);
+  pointer-events: none;
+}
+
+.mondo-facet {
+  position: absolute;
+  display: block;
+  height: auto;
+  border: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mondo-button__left {
+  left: 0;
+  top: 0;
+  height: var(--control-h);
+  width: calc(var(--control-h) * 49 / 58);
+}
+
+.mondo-button__right {
+  right: 0;
+  top: 0;
+  height: var(--control-h);
+  width: calc(var(--control-h) * 46 / 58);
+}
+
+.mondo-button__end {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: var(--control-h);
+  width: 15px;
+  color: var(--color-border);
+  pointer-events: none;
+}
+
+/* Danger / destructive button */
+.danger-button {
+  color: #ff9b9b;
+  background: transparent;
+  border: 1px solid rgba(255, 155, 155, 0.3);
+  border-radius: 0;
+  padding: 9px 16px;
+  font-size: 12px;
+  min-height: 40px;
+  transition: all 0.16s ease-out;
+}
+
+.danger-button::before,
+.danger-button::after {
+  display: none;
+}
+
+.danger-button:hover {
+  background: rgba(255, 155, 155, 0.08);
+  border-color: rgba(255, 155, 155, 0.6);
+}
+

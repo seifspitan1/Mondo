@@ -1,0 +1,10 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — DESIGN TOKENS: TYPOGRAPHY FAMILIES
+   ============================================================================= */
+
+:root {
+  /* Typography Families */
+  --font-display: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+}

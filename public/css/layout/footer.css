@@ -1,0 +1,115 @@
+/* -----------------------------------------------------------------------------
+   17. SITE FOOTER
+   ----------------------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-top: var(--space-48);
+}
+
+/* Integrated Footer Background Mark */
+.footer-bg-mark {
+  position: absolute;
+  left: 50%;
+  bottom: -40px;
+  transform: translateX(-50%);
+  width: min(380px, 55vw);
+  max-width: 440px;
+  height: auto;
+  aspect-ratio: 633 / 861;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+  opacity: 0.08;
+}
+
+.footer-bg-logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.footer-top {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 36px;
+  padding-bottom: 36px;
+}
+
+.footer-top .brand-mark {
+  width: 28px;
+  height: 40px;
+}
+
+.footer-top .brand-divider {
+  width: 1px;
+  height: 22px;
+  background-color: var(--color-border);
+}
+
+.footer-top .brand-wordmark {
+  height: 20px;
+  width: auto;
+}
+
+.footer-top .brand>span:not(.brand-divider) {
+  font-size: 22px;
+}
+
+.footer-top p {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 13px;
+  padding-top: 6px;
+}
+
+.footer-links>a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-muted);
+  transition: color 0.16s ease-out;
+}
+
+.footer-links>a:hover {
+  color: var(--color-text);
+}
+
+.footer-bottom {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 22px 0 28px;
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.footer-bottom>a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-muted);
+}
+
+.footer-bottom a:hover {
+  color: var(--color-text);
+}
+

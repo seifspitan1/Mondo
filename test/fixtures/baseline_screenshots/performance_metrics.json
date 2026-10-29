@@ -1,0 +1,162 @@
+{
+  "measuredAt": "2026-10-27T01:46:59.626Z",
+  "testUrl": "http://localhost:3005/",
+  "viewport": "1440x900",
+  "userAgent": "Chrome Headless 155.0.8059.85",
+  "timingsMs": {
+    "fcp": 440,
+    "ttfb": 24,
+    "domContentLoaded": 393,
+    "loadComplete": 510,
+    "resourceCounts": {
+      "total": 20,
+      "scripts": 5,
+      "css": 8,
+      "images": 12,
+      "fonts": 0
+    },
+    "transferredBytes": {
+      "total": 859843,
+      "js": 24655,
+      "css": 100858,
+      "images": 727447,
+      "fonts": 0
+    },
+    "resources": [
+      {
+        "name": "/css/style.css",
+        "type": "link",
+        "duration": 12,
+        "size": 65531
+      },
+      {
+        "name": "/assets/mondo-mark.webp",
+        "type": "img",
+        "duration": 22,
+        "size": 267252
+      },
+      {
+        "name": "/assets/mondo-wordmark.svg",
+        "type": "img",
+        "duration": 50,
+        "size": 1554
+      },
+      {
+        "name": "/assets/rainbow-orchard-small.webp",
+        "type": "img",
+        "duration": 23,
+        "size": 71676
+      },
+      {
+        "name": "/assets/cat-battle-small.webp",
+        "type": "img",
+        "duration": 27,
+        "size": 55978
+      },
+      {
+        "name": "/assets/cosmic-egg-small.webp",
+        "type": "img",
+        "duration": 50,
+        "size": 61508
+      },
+      {
+        "name": "/js/intro.js",
+        "type": "script",
+        "duration": 20,
+        "size": 4554
+      },
+      {
+        "name": "/js/site.js",
+        "type": "script",
+        "duration": 18,
+        "size": 3296
+      },
+      {
+        "name": "/js/home.js",
+        "type": "script",
+        "duration": 20,
+        "size": 5711
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;800;900&display=swap",
+        "type": "css",
+        "duration": 103,
+        "size": 1100
+      },
+      {
+        "name": "/js/icons.js",
+        "type": "script",
+        "duration": 36,
+        "size": 7476
+      },
+      {
+        "name": "/js/api.js",
+        "type": "script",
+        "duration": 35,
+        "size": 3618
+      },
+      {
+        "name": "/assets/facet-button-left.svg",
+        "type": "css",
+        "duration": 5,
+        "size": 780
+      },
+      {
+        "name": "/assets/facet-button-right.svg",
+        "type": "css",
+        "duration": 6,
+        "size": 788
+      },
+      {
+        "name": "/assets/facet-button-secondary-left.svg",
+        "type": "css",
+        "duration": 7,
+        "size": 722
+      },
+      {
+        "name": "/assets/facet-card-top-left.svg",
+        "type": "css",
+        "duration": 6,
+        "size": 648
+      },
+      {
+        "name": "/assets/facet-card-bottom-right.svg",
+        "type": "css",
+        "duration": 6,
+        "size": 647
+      },
+      {
+        "name": "/assets/banner.png",
+        "type": "css",
+        "duration": 228,
+        "size": 30642
+      },
+      {
+        "name": "/api/v1/load",
+        "type": "fetch",
+        "duration": 4,
+        "size": 6883
+      },
+      {
+        "name": "/favicon.svg",
+        "type": "other",
+        "duration": 9,
+        "size": 269479
+      }
+    ]
+  },
+  "cdpEngine": {
+    "documents": 20,
+    "nodes": 1475,
+    "jsEventListeners": 13,
+    "layoutCount": 8,
+    "recalcStyleCount": 20,
+    "layoutDurationSeconds": 0.237296,
+    "recalcStyleDurationSeconds": 0.016421,
+    "scriptDurationSeconds": 0.003975,
+    "taskDurationSeconds": 0.408925,
+    "jsHeapUsedBytes": 940372,
+    "jsHeapTotalBytes": 2359296
+  },
+  "consoleLogs": []
+}

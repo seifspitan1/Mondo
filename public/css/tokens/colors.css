@@ -1,0 +1,46 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — DESIGN TOKENS: COLORS & SURFACES
+   ============================================================================= */
+
+:root {
+  /* Brand color tokens from approved specification */
+  --color-bg: #08090B;
+  /* Main page background */
+  --color-surface: #121417;
+  /* Cards, controls, panels */
+  --color-surface-subtle: #16191D;
+  /* Secondary panels / headers */
+  --color-surface-elevated: #1B1E24;
+  /* Elevated modals / toolbars */
+  --color-text: #F5F7FA;
+  /* Main text and white facets */
+  --color-muted: #A6ADB6;
+  /* Secondary text */
+  --color-ice: #EDF8FF;
+  /* Focus and interaction highlight */
+  --color-glow: #D9F0FF;
+  /* Low-opacity icy light */
+
+  /* Functional border tokens */
+  --color-border: rgba(245, 247, 250, 0.20);
+  /* Quiet default border */
+  --color-border-hover: rgba(245, 247, 250, 0.55);
+  /* Clearer hover border */
+  --color-border-focus: var(--color-ice);
+  /* High-contrast focus outline */
+
+  /* Legacy variable mappings to maintain full component compatibility */
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --surface2: var(--color-surface-subtle);
+  --white: var(--color-text);
+  --muted: var(--color-muted);
+  --line: var(--color-border);
+  --lime: var(--color-ice);
+  /* Retired legacy lime mapped to icy highlight */
+  --radius: 0px;
+  /* Zero corner radius for interface components */
+
+
+  color-scheme: dark;
+}

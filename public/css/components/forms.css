@@ -1,0 +1,226 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — FORM CONTROLS & FIELD PRIMITIVES
+   ============================================================================= */
+
+.settings-editor>label {
+  font-size: 13px;
+  color: var(--color-text);
+  display: block;
+  line-height: 1.5;
+}
+
+.form-grid label>span {
+  color: var(--color-ice);
+  margin-left: 2px;
+}
+
+.form-grid label>em {
+  font-size: 11px;
+  color: var(--color-muted);
+  font-style: normal;
+  margin-left: 6px;
+}
+
+.form-grid label small {
+  display: block;
+  color: var(--color-muted);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Base input field styles */
+input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]),
+textarea,
+select {
+  display: block;
+  width: 100%;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 8px;
+  transition: border-color 0.16s ease-out, box-shadow 0.16s ease-out;
+  min-width: 0;
+}
+
+/* Primary public inputs receive the signature paired polygon module at leading edge (38x49) */
+.enquiry-form input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]):not([type=date]),
+#login-form input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=file]),
+input.input-field,
+input.mondo-input,
+.input-field,
+.mondo-input {
+  height: 53px;
+  min-height: 53px;
+  padding: 12px 14px 12px 52px !important;
+  /* 52px left padding leaves clean clearance for 38x49 module */
+  font-family: var(--font-body);
+  font-size: 15px;
+  background-image: url('/assets/facet-input-leading.svg');
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  background-size: 38px 49px;
+}
+
+/* Kit field structure compatibility if used in templates */
+.mondo-field {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  color: var(--color-text);
+}
+
+.mondo-field__label {
+  display: block;
+  margin-bottom: 8px;
+  font: 500 15px/1.4 var(--font-body);
+  color: var(--color-text);
+}
+
+.mondo-field__control {
+  position: relative;
+  display: block;
+}
+
+.mondo-field__facet {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 38px;
+  height: 49px;
+  pointer-events: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+select {
+  padding-right: 28px;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Sharp custom checkbox */
+.checkbox-row {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  margin-top: 24px;
+  cursor: pointer;
+}
+
+.checkbox-row input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  display: grid;
+  place-content: center;
+  margin: 3px 0 0;
+  cursor: pointer;
+  transition: border-color 0.16s, background-color 0.16s;
+}
+
+.checkbox-row input::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  background-color: var(--color-text);
+  transition: transform 0.12s ease-in-out;
+}
+
+.checkbox-row input:checked {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-surface);
+}
+
+.checkbox-row input:checked::before {
+  transform: scale(1);
+}
+
+.checkbox-row input:focus-visible {
+  outline: 2px solid var(--color-ice);
+  outline-offset: 2px;
+}
+
+.checkbox-row a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.submit-button {
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+
+.form-footnote {
+  font-size: 11px;
+  text-align: center;
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin-top: 14px;
+}
+
+.honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-error {
+  font-size: 13px;
+  line-height: 1.6;
+  border: 1px solid rgba(246, 129, 129, 0.4);
+  background: rgba(246, 129, 129, 0.08);
+  color: #ffb2b2;
+  padding: 14px 16px;
+  margin-top: 18px;
+}
+
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

@@ -1,0 +1,66 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/css/style.css",
+      "destination": "/dist/css/style.bundle.css"
+    },
+    {
+      "source": "/js/home.js",
+      "destination": "/dist/js/home.bundle.js"
+    },
+    {
+      "source": "/js/site.js",
+      "destination": "/dist/js/site.bundle.js"
+    },
+    {
+      "source": "/js/intro.js",
+      "destination": "/dist/js/intro.bundle.js"
+    },
+    {
+      "source": "/js/work.js",
+      "destination": "/dist/js/work.bundle.js"
+    },
+    {
+      "source": "/js/project.js",
+      "destination": "/dist/js/project.bundle.js"
+    },
+    {
+      "source": "/js/start.js",
+      "destination": "/dist/js/start.bundle.js"
+    },
+    {
+      "source": "/js/admin.js",
+      "destination": "/dist/js/admin.bundle.js"
+    },
+    {
+      "source": "/work/:slug",
+      "destination": "/work/project.html"
+    },
+    {
+      "source": "/media/:key",
+      "destination": "/api/v1/media?key=:key"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/dist/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    }
+  ]
+}

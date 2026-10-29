@@ -1,0 +1,33 @@
+/* -----------------------------------------------------------------------------
+   4. LAYOUT & CONTAINERS
+   ----------------------------------------------------------------------------- */
+.container {
+  width: calc(100% - 96px);
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+.section {
+  padding-top: var(--space-96);
+  padding-bottom: var(--space-8);
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 18px;
+}
+
+.section-description {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-muted);
+  padding-bottom: 4px;
+}
+

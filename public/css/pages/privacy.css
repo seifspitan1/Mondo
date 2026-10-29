@@ -1,0 +1,61 @@
+/* =============================================================================
+   MONDO DESIGN SYSTEM — PRIVACY POLICY & 404 NOT FOUND
+   ============================================================================= */
+
+.privacy-page {
+  max-width: 860px;
+  padding-block: 64px;
+}
+
+.privacy-page .eyebrow {
+  margin-bottom: 24px;
+}
+
+.privacy-page h1 {
+  font-size: 64px;
+  line-height: 1.04;
+}
+
+.privacy-page>.muted {
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+.privacy-page>section {
+  margin-top: 44px;
+}
+
+.privacy-page h2 {
+  font-size: 24px;
+  letter-spacing: -0.025em;
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
+
+.privacy-page section p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--color-muted);
+}
+
+.privacy-page p a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.not-found {
+  padding-block: 96px;
+}
+
+.not-found h1 {
+  font-size: 84px;
+  margin-block: 28px;
+  line-height: 1;
+}
+
+.not-found>p:not(.eyebrow) {
+  color: var(--color-muted);
+  margin-bottom: 28px;
+  font-size: 16px;
+}
+
