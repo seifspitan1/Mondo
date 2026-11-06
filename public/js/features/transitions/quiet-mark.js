@@ -385,7 +385,9 @@ export function createAdaptiveQuietMarkController(options = {}) {
 // ─── Path normalization helper ───────────────────────────────
 function normalizePath(pathname) {
   if (!pathname) return '/';
-  const clean = pathname.replace(/\/+$/, '');
+  let clean = pathname.replace(/\/+$/, '');
+  if (clean === '' || clean === '/index' || clean === '/index.html') return '/';
+  clean = clean.replace(/\/index\.html$/, '').replace(/\/index$/, '');
   return clean === '' ? '/' : clean;
 }
 
@@ -394,16 +396,67 @@ function clamp(v) { return Math.max(0, Math.min(1, v)); }
 function smoothstep(x) { x = clamp(x); return x * x * (3 - 2 * x); }
 function ease(x, a, b) { return smoothstep((x - a) / (b - a)); }
 
+/**
+ * Evaluates whether an anchor link targets the current document.
+ * Distinguishes same-document navigation (including hash links, in-page section links
+ * like /#services while on the Homepage, and same-page root links) from cross-document navigation.
+ *
+ * @param {HTMLAnchorElement|Element} anchor
+ * @returns {boolean}
+ */
+export function isSameDocumentLink(anchor) {
+  if (!anchor || typeof anchor.getAttribute !== 'function') return false;
+
+  const rawHref = (anchor.getAttribute('href') || '').trim();
+  if (!rawHref) return true;
+  // Fragment-only links (e.g. "#services", "#main")
+  if (rawHref.startsWith('#')) return true;
+
+  // Non-HTTP protocols
+  if (/^(mailto|tel|javascript|blob|data):/i.test(rawHref)) return false;
+
+  try {
+    const origin = (typeof location !== 'undefined' && location.origin) ? location.origin : 'http://localhost:3000';
+    const targetUrl = new URL(anchor.href || rawHref, origin);
+
+    // Cross-origin cannot be same document
+    if (typeof location !== 'undefined' && location.origin && targetUrl.origin !== location.origin) {
+      return false;
+    }
+
+    const currentCanonical = typeof location !== 'undefined' ? normalizePath(location.pathname) : '/';
+    const targetCanonical = normalizePath(targetUrl.pathname);
+
+    // If canonical routes differ, it is a cross-document navigation
+    if (targetCanonical !== currentCanonical) {
+      return false;
+    }
+
+    // Both point to the same canonical document!
+    // 1. Same-page hash/section link (e.g. /#services while on / or /index.html)
+    if (targetUrl.hash) return true;
+
+    // 2. Same-page link targeting current page root (e.g. brand logo click on /)
+    const currentSearch = (typeof location !== 'undefined' && location.search) ? location.search : '';
+    if ((targetUrl.search || '') === currentSearch) return true;
+
+    return false;
+  } catch (_) {
+    return false;
+  }
+}
+
 // ─── Eligibility ─────────────────────────────────────────────
-function isEligibleLink(anchor) {
+export function isEligibleLink(anchor) {
   if (!anchor || !anchor.href) return false;
+
+  // Skip all same-document navigation (never trigger logo transition, veil, or coordinator)
+  if (isSameDocumentLink(anchor)) return false;
 
   // Must be same origin
   try {
     const url = new URL(anchor.href, location.origin);
     if (url.origin !== location.origin) return false;
-    // Skip anchors (same-page hash links)
-    if (normalizePath(url.pathname) === normalizePath(location.pathname) && url.hash) return false;
     // Skip admin pages
     if (url.pathname.startsWith('/admin')) return false;
   } catch (_) {
@@ -742,6 +795,66 @@ function handleClick(e) {
   if (document.documentElement.classList.contains('has-intro')) return;
 
   const anchor = e.target.closest('a');
+  if (!anchor) return;
+
+  // 1. Same-document navigation: explicit handling with ZERO logo transitions
+  if (isSameDocumentLink(anchor)) {
+    // Dismiss any residual transition overlay state
+    dismissOverlay();
+
+    const rawHref = (anchor.getAttribute('href') || '').trim();
+    let hash = '';
+    let targetPath = '';
+    try {
+      const parsed = new URL(anchor.href || rawHref, location.origin);
+      hash = parsed.hash || '';
+      targetPath = parsed.pathname || '';
+    } catch (_) {
+      if (rawHref.startsWith('#')) hash = rawHref;
+    }
+
+    const isReduced = Boolean(
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+
+    // Case A: Link targets top of current document without hash (e.g. brand logo click on /)
+    if (!hash) {
+      if (typeof window !== 'undefined' && window.scrollY > 0) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: isReduced ? 'auto' : 'smooth' });
+        if (location.hash && history.pushState) {
+          history.pushState(null, '', location.pathname + location.search);
+        }
+      }
+      return;
+    }
+
+    // Case B: Link targets a section anchor with hash (e.g. /#services, /#packages, #process)
+    const targetId = decodeURIComponent(hash.slice(1));
+    const targetEl = targetId
+      ? (document.getElementById(targetId) || document.querySelector(`[name="${CSS.escape(targetId)}"]`))
+      : null;
+
+    if (targetEl) {
+      e.preventDefault();
+      if (location.hash !== hash) {
+        if (typeof history !== 'undefined' && typeof history.pushState === 'function') {
+          history.pushState(null, '', hash);
+        } else {
+          location.hash = hash;
+        }
+      }
+      targetEl.scrollIntoView({ behavior: isReduced ? 'auto' : 'smooth' });
+      return;
+    }
+
+    // Otherwise allow normal native fragment navigation to proceed
+    return;
+  }
+
+  // 2. Cross-document navigation
   if (!isEligibleLink(anchor)) return;
 
   const href = anchor.href;

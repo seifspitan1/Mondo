@@ -469,6 +469,74 @@ test('Phase 5C.2B.3 Guard Sync: quiet-mark.js suppresses late overlay if guard i
   );
 });
 
+test('Phase 5D-RC.2-R1: isSameDocumentLink and isEligibleLink distinguish same-document anchors from cross-document navigation', async () => {
+  const { isSameDocumentLink, isEligibleLink } = await import('../public/js/features/transitions/quiet-mark.js');
+
+  const createMockAnchor = (href, rawHref = null) => ({
+    href,
+    getAttribute: (attr) => (attr === 'href' ? (rawHref !== null ? rawHref : href) : null),
+    hasAttribute: (attr) => false
+  });
+
+  const originalLocation = globalThis.location;
+
+  try {
+    // 1. On Homepage root (/)
+    globalThis.location = new URL('http://localhost:3000/');
+    const servicesAnchor = createMockAnchor('http://localhost:3000/#services', '/#services');
+    const packagesAnchor = createMockAnchor('http://localhost:3000/#packages', '/#packages');
+    const processAnchor = createMockAnchor('http://localhost:3000/#process', '/#process');
+    const hashOnlyAnchor = createMockAnchor('http://localhost:3000/#services', '#services');
+    const brandAnchor = createMockAnchor('http://localhost:3000/', '/');
+    const workAnchor = createMockAnchor('http://localhost:3000/work', '/work');
+    const startAnchor = createMockAnchor('http://localhost:3000/start', '/start');
+
+    assert.equal(isSameDocumentLink(servicesAnchor), true, '/#services must be same-document on /');
+    assert.equal(isEligibleLink(servicesAnchor), false, '/#services must NOT be eligible for logo transition on /');
+
+    assert.equal(isSameDocumentLink(packagesAnchor), true, '/#packages must be same-document on /');
+    assert.equal(isEligibleLink(packagesAnchor), false, '/#packages must NOT be eligible for logo transition on /');
+
+    assert.equal(isSameDocumentLink(processAnchor), true, '/#process must be same-document on /');
+    assert.equal(isEligibleLink(processAnchor), false, '/#process must NOT be eligible for logo transition on /');
+
+    assert.equal(isSameDocumentLink(hashOnlyAnchor), true, '#services must be same-document on /');
+    assert.equal(isEligibleLink(hashOnlyAnchor), false, '#services must NOT be eligible for logo transition on /');
+
+    assert.equal(isSameDocumentLink(brandAnchor), true, 'brand link / must be same-document on /');
+    assert.equal(isEligibleLink(brandAnchor), false, 'brand link / must NOT be eligible for logo transition on /');
+
+    assert.equal(isSameDocumentLink(workAnchor), false, '/work must NOT be same-document on /');
+    assert.equal(isEligibleLink(workAnchor), true, '/work MUST be eligible for cross-page transition on /');
+
+    assert.equal(isSameDocumentLink(startAnchor), false, '/start must NOT be same-document on /');
+    assert.equal(isEligibleLink(startAnchor), true, '/start MUST be eligible for cross-page transition on /');
+
+    // 2. On Homepage index.html (/index.html)
+    globalThis.location = new URL('http://localhost:3000/index.html');
+    assert.equal(isSameDocumentLink(servicesAnchor), true, '/#services must be same-document on /index.html');
+    assert.equal(isEligibleLink(servicesAnchor), false, '/#services must NOT be eligible for logo transition on /index.html');
+    assert.equal(isSameDocumentLink(brandAnchor), true, 'brand link / must be same-document on /index.html');
+    assert.equal(isEligibleLink(brandAnchor), false, 'brand link / must NOT be eligible for logo transition on /index.html');
+
+    // 3. On Work page (/work)
+    globalThis.location = new URL('http://localhost:3000/work');
+    const projectAnchor = createMockAnchor('http://localhost:3000/work/cat-battle', '/work/cat-battle');
+    assert.equal(isSameDocumentLink(servicesAnchor), false, '/#services must NOT be same-document on /work');
+    assert.equal(isEligibleLink(servicesAnchor), true, '/#services MUST be eligible for cross-page transition on /work');
+    assert.equal(isSameDocumentLink(projectAnchor), false, '/work/cat-battle must NOT be same-document on /work');
+    assert.equal(isEligibleLink(projectAnchor), true, '/work/cat-battle MUST be eligible for cross-page transition on /work');
+
+    // 4. On Project page (/work/cat-battle)
+    globalThis.location = new URL('http://localhost:3000/work/cat-battle');
+    assert.equal(isSameDocumentLink(workAnchor), false, '/work must NOT be same-document on /work/cat-battle');
+    assert.equal(isEligibleLink(workAnchor), true, '/work MUST be eligible for cross-page transition on /work/cat-battle');
+  } finally {
+    globalThis.location = originalLocation;
+  }
+});
+
+
 
 
 
