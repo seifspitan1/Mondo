@@ -821,8 +821,8 @@ function handleClick(e) {
 
     // Case A: Link targets top of current document without hash (e.g. brand logo click on /)
     if (!hash) {
+      e.preventDefault();
       if (typeof window !== 'undefined' && window.scrollY > 0) {
-        e.preventDefault();
         window.scrollTo({ top: 0, behavior: isReduced ? 'auto' : 'smooth' });
         if (location.hash && history.pushState) {
           history.pushState(null, '', location.pathname + location.search);
