@@ -1,0 +1,199 @@
+/* =============================================================================
+   MONDO — Adaptive Loading Shell (Phase 5C.3.3 Pilot: /work/:slug)
+   Owner-Approved D03: Concept C — Subtle Breathing
+   ============================================================================= */
+
+.mondo-loading-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 9985;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 200ms ease-out, visibility 200ms ease-out;
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Actively displaying branded loading shell */
+.mondo-loading-shell.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+html.is-project-pilot-active .mondo-loading-shell {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* =============================================================================
+   Direct Visit First-Paint Guard (Phase 5C.3.3-R2 /work/:slug Pilot)
+   Prevents Header/CTA/Footer FOIC on direct visits before project JS runs.
+   ============================================================================= */
+html.is-project-pilot-guard {
+  background: #000000 !important;
+}
+
+html.is-project-pilot-guard body {
+  background: #000000 !important;
+}
+
+html.is-project-pilot-guard body > *:not(#mondo-loading-shell):not(#mondo-quiet-mark) {
+  visibility: hidden !important;
+}
+
+/* Soft exit phase (~200ms) */
+.mondo-loading-shell.is-exiting {
+  opacity: 0;
+  pointer-events: none;
+  visibility: visible;
+  transition: opacity 200ms ease-out;
+}
+
+/* Inner alignment container */
+.mondo-loading-shell__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.mondo-loading-shell__logo-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Authentic White MONDO Mark (Asset: /assets/intro/mondo-white.png) */
+.mondo-loading-shell__logo {
+  height: clamp(290px, 48.6vh, 438px);
+  width: auto;
+  aspect-ratio: 610 / 870;
+  max-width: 55vw;
+  max-height: 48.6vh;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease-out;
+}
+
+@media (max-width: 699px) {
+  .mondo-loading-shell__logo {
+    height: clamp(242px, 37.8vh, 298px);
+    aspect-ratio: 610 / 870;
+    max-width: 55vw;
+    max-height: 37.8vh;
+  }
+}
+
+.is-logo-ready .mondo-loading-shell__logo,
+.mondo-loading-shell__logo.is-decoded {
+  opacity: 1;
+  visibility: visible;
+}
+
+.is-logo-failed .mondo-loading-shell__logo {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Concept C: Subtle Breathing Animation */
+@keyframes mondo-subtle-breathing {
+  0% {
+    transform: scale(0.985);
+    opacity: 0.88;
+  }
+  50% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.985);
+    opacity: 0.88;
+  }
+}
+
+.mondo-loading-shell.is-active .mondo-loading-shell__logo,
+html.is-project-pilot-active .mondo-loading-shell .mondo-loading-shell__logo {
+  animation: mondo-subtle-breathing 2.6s ease-in-out infinite;
+}
+
+/* Restrained Status Text for Long Waits (D14) */
+.mondo-loading-shell__status {
+  margin-top: 32px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted, #a6adb6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms ease, visibility 300ms ease;
+  min-height: 20px;
+}
+
+html.is-project-pilot-status .mondo-loading-shell__status,
+.mondo-loading-shell__status.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Non-destructive error and not-found host isolation (AQ1-R1-03) */
+#project-main.has-project-error > *:not(#project-error-host):not(noscript),
+#project-main.has-project-not-found > *:not(#project-error-host):not(noscript),
+#project-error-host[hidden] {
+  display: none !important;
+}
+
+/* Project Details No-JS and Error State fallbacks */
+.project-noscript,
+.project-error-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.project-error-state:focus {
+  outline: none;
+}
+
+.project-error-state h1,
+.project-noscript h2 {
+  font-family: var(--font-display, inherit);
+  color: var(--color-text, #ffffff);
+  margin: 12px 0 16px;
+}
+
+.project-error-state .muted,
+.project-noscript .muted {
+  color: var(--color-muted, #a6adb6);
+  margin-bottom: 28px;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .mondo-loading-shell {
+    transition: none !important;
+  }
+  .mondo-loading-shell.is-active .mondo-loading-shell__logo,
+  html.is-project-pilot-active .mondo-loading-shell .mondo-loading-shell__logo {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+

@@ -1,8 +1,21 @@
-import { initEnquiryPage, initEnquiryParams, setupEnquiryForm, renderSuccessMarkup } from './features/enquiry/enquiry-form.js';
+import {
+  initEnquiryPage,
+  mountEnquiry,
+  unmountEnquiry,
+  mount,
+  unmount,
+  initEnquiryParams,
+  setupEnquiryForm,
+  renderSuccessMarkup
+} from './features/enquiry/enquiry-form.js';
 import { validateEnquiryPayload, isHoneypotTriggered, buildEnquiryPayload } from './features/enquiry/validation.js';
 
 export {
   initEnquiryPage,
+  mountEnquiry,
+  unmountEnquiry,
+  mount,
+  unmount,
   initEnquiryParams,
   setupEnquiryForm,
   renderSuccessMarkup,

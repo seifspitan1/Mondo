@@ -1,6 +1,6 @@
-import { initWorkPage } from './features/work/work-page.js';
+import { initWorkPage, mountWork, unmountWork, mount, unmount } from './features/work/work-page.js';
 
-export { initWorkPage };
+export { initWorkPage, mountWork, unmountWork, mount, unmount };
 
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {

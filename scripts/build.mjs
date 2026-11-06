@@ -35,7 +35,7 @@ async function build() {
     entryPoints: [path.join(publicDir, 'css', 'style.css')],
     bundle: true,
     minify: true,
-    external: ['/assets/*'],
+    external: ['/assets/*', '/fonts/*'],
     legalComments: 'none',
     write: false
   });
@@ -94,6 +94,38 @@ async function build() {
   const manifestPath = path.join(distDir, 'manifest.json');
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
   console.log(`-> Manifest written to: ${path.relative(rootDir, manifestPath)}`);
+
+  // 4. Safe Pruning of Stale Generated Content-Hashed Bundles (Batch 1C)
+  // Prunes only superseded, unreferenced hashed bundles in public/dist/css and public/dist/js.
+  // Never touches source files, unhashed canonical bundles, manifest.json, or external assets.
+  const activeFilenames = new Set(['manifest.json']);
+  for (const b of Object.values(manifest.bundles)) {
+    if (b.canonical) activeFilenames.add(path.basename(b.canonical));
+    if (b.hashed) activeFilenames.add(path.basename(b.hashed));
+  }
+
+  let prunedCount = 0;
+  if (fs.existsSync(distCssDir)) {
+    for (const file of fs.readdirSync(distCssDir)) {
+      if (/^style\.bundle\.[0-9a-f]{8}\.css$/.test(file) && !activeFilenames.has(file)) {
+        fs.unlinkSync(path.join(distCssDir, file));
+        prunedCount++;
+      }
+    }
+  }
+
+  if (fs.existsSync(distJsDir)) {
+    for (const file of fs.readdirSync(distJsDir)) {
+      if (/^[a-z]+\.bundle\.[0-9a-f]{8}\.js$/.test(file) && !activeFilenames.has(file)) {
+        fs.unlinkSync(path.join(distJsDir, file));
+        prunedCount++;
+      }
+    }
+  }
+
+  if (prunedCount > 0) {
+    console.log(`-> Safely pruned ${prunedCount} stale historical hashed bundle(s) from public/dist`);
+  }
 
   const elapsed = Date.now() - startTime;
   console.log(`=== BUILD COMPLETE in ${elapsed}ms ===`);

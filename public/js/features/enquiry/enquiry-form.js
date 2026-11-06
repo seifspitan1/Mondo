@@ -192,13 +192,106 @@ export async function loadStudioContact({ root = document, fetchContent = loadPu
   } catch {}
 }
 
+// Track active async operations for stale request cancellation
+let activeEnquiryOp = 0;
+
+/**
+ * Phase 5C Stage G1: Route Lifecycle Contract — Mount Enquiry Page.
+ * Parses query params from context/URL, attaches form validation & submission listeners,
+ * and hydrates direct studio contacts.
+ * Safe, idempotent, and cancellation-aware.
+ *
+ * @param {object} [context]
+ * @param {Document|HTMLElement} [context.root=document]
+ * @param {Function} [context.fetchContent=loadPublicContent]
+ * @param {Function} [context.apiSubmit=submitEnquiry]
+ * @param {Function} [context.trackEvent=track]
+ * @param {string} [context.url]
+ * @param {string|URLSearchParams} [context.search]
+ * @param {number|string} [context.operationId]
+ * @param {AbortSignal} [context.signal]
+ * @returns {void}
+ */
+export function mountEnquiry({
+  root = document,
+  fetchContent = loadPublicContent,
+  apiSubmit = submitEnquiry,
+  trackEvent = track,
+  url = '',
+  search = '',
+  operationId = null,
+  signal = null
+} = {}) {
+  const scopeEl = root.body || (root.getElementById ? root.getElementById('enquiry-wrap') : null);
+  if (scopeEl && scopeEl.dataset && scopeEl.dataset.enquiryMounted === 'true') {
+    return;
+  }
+  if (scopeEl && scopeEl.dataset) {
+    scopeEl.dataset.enquiryMounted = 'true';
+    scopeEl.dataset.enquiryInitialized = 'true';
+  }
+
+  const currentOp = operationId || ++activeEnquiryOp;
+
+  let searchStr = search;
+  if (!searchStr && url && typeof url === 'string') {
+    const qIndex = url.indexOf('?');
+    if (qIndex !== -1) searchStr = url.slice(qIndex);
+  }
+  if (!searchStr && typeof window !== 'undefined') {
+    searchStr = window.location.search;
+  }
+
+  initEnquiryParams(searchStr || '', { root });
+  setupEnquiryForm({ root, apiSubmit, trackEvent });
+
+  if (!signal || !signal.aborted) {
+    loadStudioContact({
+      root,
+      fetchContent: async () => {
+        const data = await fetchContent();
+        if (currentOp !== activeEnquiryOp || (signal && signal.aborted)) {
+          return {}; // Stale operation
+        }
+        return data;
+      }
+    });
+  }
+}
+
+/**
+ * Phase 5C Stage G1: Route Lifecycle Contract — Unmount Enquiry Page.
+ * Releases form listeners, invalidates in-flight requests, and resets idempotency flags.
+ *
+ * @param {object} [context]
+ * @param {Document|HTMLElement} [context.root=document]
+ */
+export function unmountEnquiry({ root = document } = {}) {
+  // Invalidate in-flight async operations
+  activeEnquiryOp++;
+
+  const scopeEl = root.body || (root.getElementById ? root.getElementById('enquiry-wrap') : null);
+  if (scopeEl && scopeEl.dataset) {
+    delete scopeEl.dataset.enquiryMounted;
+    delete scopeEl.dataset.enquiryInitialized;
+  }
+
+  const form = root.getElementById ? root.getElementById('enquiry-form') : root.querySelector('#enquiry-form');
+  if (form) {
+    delete form.dataset.enquiryBound;
+    if (form.parentNode) {
+      form.replaceWith(form.cloneNode(true));
+    }
+  }
+}
+
+// Canonical lifecycle aliases for Global Coordinator
+export { mountEnquiry as mount, unmountEnquiry as unmount };
+
 /**
  * Orchestrator initializing the enquiry page features:
- * - Query parameter parsing and prefill
- * - Form event handlers, validation, idempotency token, and submission
- * - Direct contact info hydration
+ * Preserved for backward compatibility with direct document loads.
  *
- * Idempotent and safe against duplicate initialization.
  * @param {object} [options]
  * @param {Document|HTMLElement} [options.root=document]
  * @param {Function} [options.fetchContent=loadPublicContent]
@@ -211,15 +304,5 @@ export function initEnquiryPage({
   apiSubmit = submitEnquiry,
   trackEvent = track
 } = {}) {
-  const scopeEl = root.body || (root.getElementById ? root.getElementById('enquiry-wrap') : null);
-  if (scopeEl && scopeEl.dataset && scopeEl.dataset.enquiryInitialized === 'true') {
-    return;
-  }
-  if (scopeEl && scopeEl.dataset) {
-    scopeEl.dataset.enquiryInitialized = 'true';
-  }
-
-  initEnquiryParams(typeof window !== 'undefined' ? window.location.search : '', { root });
-  setupEnquiryForm({ root, apiSubmit, trackEvent });
-  loadStudioContact({ root, fetchContent });
+  return mountEnquiry({ root, fetchContent, apiSubmit, trackEvent });
 }

@@ -57,13 +57,26 @@ app.get('/media/:key', (req, res) => {
 const publicDir = path.join(__dirname, 'public');
 const distDir = path.join(publicDir, 'dist');
 
-// 1. Immutable caching for content-hashed assets under /dist/
+// Dedicated Service Worker endpoint: never cached with long-lived headers
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('Service-Worker-Allowed', '/');
+  return res.sendFile(path.join(publicDir, 'sw.js'));
+});
+
+// 1. Selective caching for /dist/: immutable for content-hashed, revalidation for unhashed
+const isHashedAsset = (filePath) => /\.[0-9a-f]{8}\.(js|css)$/i.test(filePath);
+
 app.use('/dist', express.static(distDir, {
-  maxAge: '1y',
-  immutable: true,
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.css')) res.setHeader('Content-Type', 'text/css; charset=UTF-8');
     if (filePath.endsWith('.js')) res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+    if (isHashedAsset(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    }
   }
 }));
 
@@ -84,7 +97,7 @@ for (const [routePath, bundleFilePath] of Object.entries(bundleMappings)) {
     if (req.query.source !== '1' && fs.existsSync(bundleFilePath)) {
       const ctype = routePath.endsWith('.css') ? 'text/css; charset=UTF-8' : 'application/javascript; charset=UTF-8';
       res.setHeader('Content-Type', ctype);
-      res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
       return res.sendFile(bundleFilePath);
     }
     next();
@@ -95,10 +108,24 @@ for (const [routePath, bundleFilePath] of Object.entries(bundleMappings)) {
 app.use(express.static(publicDir, {
   extensions: ['html'],
   setHeaders: (res, filePath) => {
-    if (filePath.includes(path.join('public', 'assets')) || filePath.includes('/assets/')) {
+    if (filePath.includes(path.join('public', 'admin')) || filePath.includes('/admin/')) {
+      res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      return;
+    }
+    const isAsset = filePath.includes(path.join('public', 'assets')) ||
+      filePath.includes('/assets/') ||
+      filePath.includes(path.join('public', 'fonts')) ||
+      filePath.includes('/fonts/') ||
+      /(favicon|apple-touch-icon)/i.test(path.basename(filePath));
+    if (filePath.endsWith('.woff2')) {
+      res.setHeader('Content-Type', 'font/woff2');
+    }
+    if (isAsset) {
       res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
     } else if (filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     }
   }
 }));
@@ -106,24 +133,29 @@ app.use(express.static(publicDir, {
 // Route rewrites for clean URLs matching Vercel
 app.get('/work/:slug', (req, res, next) => {
   if (req.params.slug && !req.params.slug.includes('.')) {
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     return res.sendFile(path.join(publicDir, 'work', 'project.html'));
   }
   next();
 });
 
 app.get('/work', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   res.sendFile(path.join(publicDir, 'work', 'index.html'));
 });
 
 app.get('/start', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   res.sendFile(path.join(publicDir, 'start', 'index.html'));
 });
 
 app.get('/privacy', (req, res) => {
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
   res.sendFile(path.join(publicDir, 'privacy', 'index.html'));
 });
 
 app.get('/admin', (req, res) => {
+  res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.sendFile(path.join(publicDir, 'admin', 'index.html'));
 });
 

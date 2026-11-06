@@ -1,6 +1,22 @@
-import { initIntro, shouldShowIntro, markShown, prefersReducedMotion } from './features/intro/intro.js';
+import {
+  initIntro,
+  shouldShowIntro,
+  markShown,
+  prefersReducedMotion,
+  DUR_MS,
+  MAX_WAIT_MS,
+  ASSET_PATHS
+} from './features/intro/intro.js';
 
-export { initIntro, shouldShowIntro, markShown, prefersReducedMotion };
+export {
+  initIntro,
+  shouldShowIntro,
+  markShown,
+  prefersReducedMotion,
+  DUR_MS,
+  MAX_WAIT_MS,
+  ASSET_PATHS
+};
 
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {

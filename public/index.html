@@ -14,19 +14,62 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta name="theme-color" content="#08090b" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/orbitron-latin.woff2" crossorigin />
   <link rel="preload" as="image" href="/assets/mondo-mark.webp" type="image/webp" />
-  <link rel="stylesheet" href="/css/style.css" />
   <script>
     try {
       if (!sessionStorage.getItem('mondo_intro_shown') &&
           !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
           !window.location.pathname.startsWith('/admin')) {
         document.documentElement.classList.add('has-intro');
+        document.head.insertAdjacentHTML('beforeend',
+          '<link rel="preload" as="image" href="/assets/intro/mondo-white.png" type="image/png" />' +
+          '<link rel="preload" as="image" href="/assets/intro/mondo-black.png" type="image/png" />' +
+          '<link rel="preload" as="image" href="/assets/intro/mondo-metal.png" type="image/png" />' +
+          '<link rel="preload" as="image" href="/assets/intro/mondo-rim.png" type="image/png" />' +
+          '<link rel="preload" as="image" href="/assets/intro/mondo-depth.png" type="image/png" />'
+        );
+      } else if (sessionStorage.getItem('mondo_quiet_mark_pending')) {
+        var raw = sessionStorage.getItem('mondo_quiet_mark_pending');
+        var isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isAdmin = window.location.pathname.startsWith('/admin');
+        if (isReduced || isAdmin) {
+          sessionStorage.removeItem('mondo_quiet_mark_pending');
+        } else {
+          var data = JSON.parse(raw);
+          var currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+          var targetPath = (data && typeof data.to === 'string') ? (data.to.replace(/\/+$/, '') || '/') : '';
+          var isFiniteTs = data && typeof data.ts === 'number' && isFinite(data.ts);
+          var age = isFiniteTs ? Date.now() - data.ts : -1;
+          var isValid = data && typeof data === 'object' && targetPath === currentPath && age >= 0 && age <= 15000;
+
+          if (isValid) {
+            document.documentElement.style.background = '#000';
+            document.documentElement.classList.add('is-quiet-mark-inbound');
+            var expectedRaw = raw;
+            setTimeout(function() {
+              document.documentElement.classList.remove('is-quiet-mark-inbound');
+              document.documentElement.style.background = '';
+              try {
+                var currentRaw = sessionStorage.getItem('mondo_quiet_mark_pending');
+                if (currentRaw === expectedRaw) {
+                  sessionStorage.removeItem('mondo_quiet_mark_pending');
+                }
+              } catch (_) {}
+            }, 4000);
+          } else {
+            sessionStorage.removeItem('mondo_quiet_mark_pending');
+          }
+        }
       }
-    } catch (_) {}
+    } catch (_) {
+      try { sessionStorage.removeItem('mondo_quiet_mark_pending'); } catch (_) {}
+    }
   </script>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body class="antialiased">
@@ -34,14 +77,7 @@
 
   <!-- Loading Introduction — once per session, hidden by default -->
   <div class="mondo-intro" id="mondo-intro" aria-hidden="true">
-    <img
-      src="/assets/mondo-mark.webp"
-      alt=""
-      class="mondo-intro__logo"
-      width="150"
-      height="204"
-      aria-hidden="true"
-    />
+    <canvas class="mondo-intro__stage" id="mondo-intro-stage" aria-hidden="true"></canvas>
   </div>
 
   <header class="site-header">
@@ -204,7 +240,7 @@
             <img src="/assets/rainbow-orchard.webp"
               srcset="/assets/rainbow-orchard-small.webp 800w, /assets/rainbow-orchard.webp 1600w"
               sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
-              alt="Rainbow Orchard — thumbnails creative" width="1600" height="900" loading="eager" decoding="async" />
+              alt="Rainbow Orchard — thumbnails creative" width="1600" height="900" loading="lazy" decoding="async" />
             <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
                 <path d="M7 7h10v10" />
@@ -229,7 +265,7 @@
             <img src="/assets/cat-battle.webp"
               srcset="/assets/cat-battle-small.webp 800w, /assets/cat-battle.webp 1600w"
               sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw" alt="Cat Battles — thumbnails creative"
-              width="1600" height="900" loading="eager" decoding="async" />
+              width="1600" height="900" loading="lazy" decoding="async" />
             <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
                 <path d="M7 7h10v10" />
@@ -254,7 +290,7 @@
             <img src="/assets/cosmic-egg.webp"
               srcset="/assets/cosmic-egg-small.webp 800w, /assets/cosmic-egg.webp 1600w"
               sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
-              alt="The Cosmic Upgrade — thumbnails creative" width="1600" height="900" loading="eager"
+              alt="The Cosmic Upgrade — thumbnails creative" width="1600" height="900" loading="lazy"
               decoding="async" />
             <span class="project-view"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
@@ -625,7 +661,7 @@
         </a>
       </div>
       <div class="cta-art" aria-hidden="true">
-        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" width="400" height="570" />
+        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" width="400" height="570" loading="lazy" decoding="async" />
       </div>
     </section>
   </main>
@@ -633,12 +669,12 @@
   <footer class="site-footer container">
     <!-- Integrated Footer Background Mark -->
     <div class="footer-bg-mark" aria-hidden="true">
-      <img src="/assets/mondo-mark.webp" alt="" class="footer-bg-logo" width="633" height="861" decoding="async" />
+      <img src="/assets/mondo-mark.webp" alt="" class="footer-bg-logo" width="633" height="861" loading="lazy" decoding="async" />
     </div>
     <div class="footer-top">
       <div>
         <a class="brand" href="/" aria-label="MONDO home">
-          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="28" height="40" />
+          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="28" height="40" loading="lazy" decoding="async" />
           <span class="brand-divider" aria-hidden="true"></span>
           <img src="/assets/mondo-wordmark.svg" alt="MONDO" class="brand-wordmark" width="95" height="20" />
         </a>

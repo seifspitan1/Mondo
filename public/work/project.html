@@ -10,9 +10,815 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/orbitron-latin.woff2" crossorigin />
+  <meta name="theme-color" content="#08090b" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" as="image" href="/assets/intro/mondo-white.png" fetchpriority="high" />
+  <style id="mondo-pilot-critical-css">
+    /* G1-MINIMAL: Prevent pre-stylesheet image overflow */
+    img {
+      max-width: 100%;
+    }
+
+    html.is-quiet-mark-inbound,
+    html.is-quiet-mark-inbound body,
+    html.is-project-pilot-guard,
+    html.is-project-pilot-guard body,
+    html.is-project-css-pending,
+    html.is-project-css-pending body {
+      background-color: #000000 !important;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    html.is-project-css-pending body>*:not(#mondo-quiet-mark):not(#mondo-loading-shell):not(#mondo-intro),
+    html.is-quiet-mark-inbound body>*:not(#mondo-quiet-mark):not(#mondo-intro),
+    html.is-project-pilot-guard body>*:not(#mondo-loading-shell):not(#mondo-quiet-mark) {
+      visibility: hidden !important;
+    }
+
+    html.is-project-pilot-error:not(.is-quiet-mark-inbound):not(.is-project-pilot-guard) body>#main,
+    html.is-project-pilot-error:not(.is-quiet-mark-inbound):not(.is-project-pilot-guard) #project-main,
+    html.is-project-pilot-error:not(.is-quiet-mark-inbound):not(.is-project-pilot-guard) #project-error-host {
+      visibility: visible !important;
+    }
+
+    #project-main.has-project-error>*:not(#project-error-host):not(noscript),
+    #project-main.has-project-not-found>*:not(#project-error-host):not(noscript),
+    #project-error-host[hidden] {
+      display: none !important;
+    }
+
+    .mondo-quiet-mark,
+    .mondo-loading-shell {
+      position: fixed;
+      inset: 0;
+      background-color: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .mondo-quiet-mark {
+      z-index: 9990;
+      opacity: 0;
+      pointer-events: none;
+      visibility: visible;
+    }
+
+    .mondo-loading-shell {
+      z-index: 9985;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 200ms ease-out, visibility 200ms ease-out;
+    }
+
+    .mondo-loading-shell.is-active,
+    html.is-project-pilot-active .mondo-loading-shell {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    .mondo-quiet-mark__inner,
+    .mondo-loading-shell__inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .mondo-quiet-mark__breath,
+    .mondo-loading-shell__logo-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      will-change: transform, opacity;
+    }
+
+    .mondo-quiet-mark__logo,
+    .mondo-loading-shell__logo {
+      height: clamp(290px, 48.6vh, 438px);
+      width: auto;
+      aspect-ratio: 610 / 870;
+      max-width: 55vw;
+      max-height: 48.6vh;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transform-origin: center center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 200ms ease-out;
+    }
+
+    @media (max-width: 699px) {
+
+      .mondo-quiet-mark__logo,
+      .mondo-loading-shell__logo {
+        height: clamp(242px, 37.8vh, 298px);
+        max-width: 55vw;
+        max-height: 37.8vh;
+      }
+    }
+
+    .is-logo-ready .mondo-quiet-mark__logo,
+    .is-logo-ready .mondo-loading-shell__logo,
+    .mondo-quiet-mark__logo.is-decoded,
+    .mondo-loading-shell__logo.is-decoded {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .is-logo-failed .mondo-quiet-mark__logo,
+    .is-logo-failed .mondo-loading-shell__logo {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    @keyframes mondo-qm-breathing-onset {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1.015);
+        opacity: 1;
+      }
+    }
+
+    @keyframes mondo-qm-subtle-breathing {
+      0% {
+        transform: scale(1.015);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(0.985);
+        opacity: 0.88;
+      }
+
+      100% {
+        transform: scale(1.015);
+        opacity: 1;
+      }
+    }
+
+    @keyframes mondo-subtle-breathing {
+      0% {
+        transform: scale(0.985);
+        opacity: 0.88;
+      }
+
+      50% {
+        transform: scale(1.015);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0.985);
+        opacity: 0.88;
+      }
+    }
+
+    .mondo-quiet-mark.is-qm-breathing .mondo-quiet-mark__breath,
+    html.is-qm-breathing .mondo-quiet-mark__breath {
+      animation:
+        mondo-qm-breathing-onset 450ms ease-in-out 0s 1 normal forwards,
+        mondo-qm-subtle-breathing 2.6s ease-in-out 450ms infinite normal forwards;
+    }
+
+    .mondo-loading-shell.is-active .mondo-loading-shell__logo,
+    html.is-project-pilot-active .mondo-loading-shell .mondo-loading-shell__logo {
+      animation: mondo-subtle-breathing 2.6s ease-in-out infinite;
+    }
+
+    .mondo-quiet-mark__status,
+    .mondo-loading-shell__status {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a6adb6;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms ease, visibility 300ms ease;
+      min-height: 20px;
+      pointer-events: none;
+    }
+
+    .mondo-quiet-mark__status {
+      position: absolute;
+      top: calc(100% + 32px);
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      width: max-content;
+      max-width: 88vw;
+    }
+
+    .mondo-loading-shell__status {
+      margin-top: 32px;
+    }
+
+    .mondo-quiet-mark.is-qm-status .mondo-quiet-mark__status,
+    html.is-qm-status .mondo-quiet-mark__status,
+    .mondo-quiet-mark__status.is-visible,
+    html.is-project-pilot-status .mondo-loading-shell__status,
+    .mondo-loading-shell__status.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .project-error-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: #F5F7FA;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .project-error-state:focus {
+      outline: none;
+    }
+
+    /* Canonical Dark Ice error button styling: matches buttons.css tokens and faceted geometry (D26) */
+    .project-error-state .button {
+      box-sizing: border-box;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      height: 58px;
+      padding: 12px 55px;
+      background-color: #08090B;
+      color: #F5F7FA;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-top: 1px solid #F5F7FA;
+      border-bottom: 1px solid #F5F7FA;
+      border-left: none;
+      border-right: none;
+      clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+      cursor: pointer;
+    }
+
+    .project-error-state .button::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 38px;
+      background-image: url("/assets/facet-button-left.svg");
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    .project-error-state .button::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 17px;
+      background-image: url("/assets/facet-button-right.svg");
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    .project-error-state .button-outline {
+      box-sizing: border-box;
+      position: relative;
+      min-height: 50px;
+      height: 50px;
+      padding-inline: 48px 23px;
+      background-color: #08090B;
+      border-top: 1px solid rgba(245, 247, 250, 0.40);
+      border-bottom: 1px solid rgba(245, 247, 250, 0.40);
+      border-left: none;
+      border-right: none;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+    }
+
+    .project-error-state .button-outline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 36px;
+      background-image: url("/assets/facet-button-secondary-left.svg");
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    .project-error-state .button-outline::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 15px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(245,247,250,0.45)'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    .project-error-state .button:focus-visible,
+    .project-error-state .button-outline:focus-visible {
+      outline: 2px solid rgba(245, 247, 250, 0.9);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .mondo-quiet-mark__breath,
+      .mondo-quiet-mark.is-qm-breathing .mondo-quiet-mark__breath,
+      html.is-qm-breathing .mondo-quiet-mark__breath,
+      .mondo-loading-shell.is-active .mondo-loading-shell__logo,
+      html.is-project-pilot-active .mondo-loading-shell .mondo-loading-shell__logo {
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+    }
+  </style>
+  <script>
+    (function () {
+      document.documentElement.classList.add('is-project-css-pending');
+      window.__MONDO_MARK_CSS_READY__ = function (linkEl) {
+        if (linkEl && linkEl.media !== 'all') {
+          linkEl.media = 'all';
+        }
+        document.documentElement.classList.remove('is-project-css-pending');
+        document.documentElement.classList.add('is-project-css-ready');
+        window.__MONDO_CSS_READY__ = true;
+        try {
+          window.dispatchEvent(new CustomEvent('mondo:css-ready'));
+        } catch (_) { }
+      };
+
+      var earlyLogoAttemptSeq = 0;
+      function bindEarlyLogoReadiness(logoEl, containerEl) {
+        if (!logoEl) return;
+        var attemptId = ++earlyLogoAttemptSeq;
+        if (containerEl) {
+          containerEl.classList.add('is-logo-pending');
+        }
+
+        function onDecodeSuccess() {
+          if (attemptId !== earlyLogoAttemptSeq) return;
+          // Decision D27: Rely strictly on lifecycle dismissal; aria-hidden is decorative accessibility state
+          if (containerEl && containerEl.getAttribute('data-qm-state') === 'dismissed') {
+            return;
+          }
+          if (logoEl.naturalWidth > 0) {
+            logoEl.classList.add('is-decoded');
+            logoEl.style.visibility = '';
+            logoEl.style.opacity = '1';
+            if (containerEl) {
+              containerEl.classList.remove('is-logo-pending', 'is-logo-failed');
+              containerEl.classList.add('is-logo-ready');
+            }
+          } else {
+            onDecodeFailure();
+          }
+        }
+
+        function onDecodeFailure() {
+          if (attemptId !== earlyLogoAttemptSeq) return;
+          logoEl.classList.remove('is-decoded');
+          logoEl.style.visibility = 'hidden';
+          logoEl.style.opacity = '0';
+          if (containerEl) {
+            containerEl.classList.remove('is-logo-pending', 'is-logo-ready');
+            containerEl.classList.add('is-logo-failed');
+          }
+        }
+
+        if (typeof logoEl.decode === 'function') {
+          logoEl.decode().then(onDecodeSuccess).catch(function () {
+            // Decision D25: Strict decode rejection — never reveal image on rejected decode()
+            onDecodeFailure();
+          });
+        } else {
+          // Unsupported browser fallback (only when HTMLImageElement.prototype.decode is absent)
+          if (logoEl.complete && logoEl.naturalWidth > 0) {
+            onDecodeSuccess();
+          } else {
+            logoEl.addEventListener('load', function () {
+              if (logoEl.naturalWidth > 0) onDecodeSuccess();
+              else onDecodeFailure();
+            }, { once: true });
+            logoEl.addEventListener('error', onDecodeFailure, { once: true });
+          }
+        }
+      }
+      window.__MONDO_BIND_LOGO_READINESS__ = bindEarlyLogoReadiness;
+
+      // Phase 5C.3.3-AQ1-R5 D29 & D30: Slow-Network Startup Resilience & Pre-Hydration Recovery
+      window.__MONDO_BOOTSTRAP_STATE__ = 'bootstrap_pending';
+      window.__MONDO_SCRIPT_ERROR__ = false;
+      window.__MONDO_RETRY_INTENT__ = false;
+
+      function onScriptError(source) {
+        window.__MONDO_SCRIPT_ERROR__ = true;
+        window.__MONDO_BOOTSTRAP_STATE__ = 'script_error';
+        var host = document.getElementById('project-error-host');
+        if (host && !host.hidden && host.querySelector('.project-error-state')) {
+          mountNonDestructivePilotError('script_error');
+        }
+      }
+      window.__MONDO_ON_SCRIPT_ERROR__ = onScriptError;
+
+      window.addEventListener('error', function (e) {
+        if (e && e.target && (e.target.tagName === 'SCRIPT' || e.target.src)) {
+          onScriptError('script_tag');
+        }
+      }, true);
+
+      function handlePreHydrationRetry() {
+        if (typeof window.__MONDO_RETRY_PROJECT__ === 'function') {
+          try {
+            window.__MONDO_RETRY_PROJECT__();
+            return;
+          } catch (_) {}
+        }
+        if (window.__MONDO_SCRIPT_ERROR__) {
+          window.location.reload();
+          return;
+        }
+        window.__MONDO_RETRY_INTENT__ = true;
+        var btn = document.getElementById('project-retry-btn');
+        if (btn) {
+          btn.textContent = 'Connecting\u2026';
+          btn.setAttribute('disabled', 'disabled');
+          btn.setAttribute('aria-busy', 'true');
+          btn.style.pointerEvents = 'none';
+        }
+      }
+      window.__MONDO_HANDLE_RETRY__ = handlePreHydrationRetry;
+
+      function mountNonDestructivePilotError() {
+        if (window.__MONDO_PROJECT_READY__) return;
+        var main = document.getElementById('project-main');
+        if (!main) return;
+        window.__MONDO_WATCHDOG_FIRED__ = true;
+        if (typeof window.__MONDO_ABORT_PROJECT_OPERATION__ === 'function') {
+          try { window.__MONDO_ABORT_PROJECT_OPERATION__(); } catch (_) { }
+        }
+        document.documentElement.classList.add('is-project-pilot-error');
+        main.classList.add('has-project-error');
+
+        var host = document.getElementById('project-error-host');
+        if (!host) {
+          host = document.createElement('div');
+          host.id = 'project-error-host';
+          host.className = 'project-error-host';
+          main.insertBefore(host, main.firstChild);
+        }
+        host.hidden = false;
+
+        var errorType = arguments[0];
+        var isScriptFailed = Boolean(
+          window.__MONDO_SCRIPT_ERROR__ ||
+          window.__MONDO_BOOTSTRAP_STATE__ === 'script_error' ||
+          errorType === 'script_error'
+        );
+        var targetNoticeType = isScriptFailed ? 'error' : 'slow_startup';
+        var currentNoticeType = host.getAttribute('data-notice-type');
+        var existingErr = host.querySelector('.project-error-state');
+
+        if (!existingErr || currentNoticeType !== targetNoticeType) {
+          host.setAttribute('data-notice-type', targetNoticeType);
+          var eyebrow = isScriptFailed ? 'CONNECTION ISSUE' : 'STARTUP NOTICE';
+          var title = isScriptFailed ? 'Unable to load project.' : 'Loading is taking longer than expected.';
+          var body = isScriptFailed
+            ? 'We encountered a problem loading this project brief. Your connection may be offline or interrupted.'
+            : 'The project assets are taking longer to load over your network connection. We are still connecting in the background.';
+          var isRetryPending = Boolean(window.__MONDO_RETRY_INTENT__);
+          var btnLabel = isRetryPending ? 'Connecting\u2026' : 'Try again';
+          var btnAttrs = isRetryPending ? ' disabled aria-busy="true" style="pointer-events: none;"' : '';
+
+          host.innerHTML = '<div class="project-error-state" role="alert" tabindex="-1" style="text-align: center; padding: 100px 20px;">' +
+            '<p class="eyebrow"><span class="lime-dot"></span> ' + eyebrow + '</p>' +
+            '<h1>' + title + '</h1>' +
+            '<p class="muted" style="max-width: 480px; margin: 16px auto 32px;">' + body + '</p>' +
+            '<div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">' +
+            '<button class="button" id="project-retry-btn" type="button"' + btnAttrs + ' onclick="if(window.__MONDO_HANDLE_RETRY__){window.__MONDO_HANDLE_RETRY__();}else if(window.__MONDO_RETRY_PROJECT__){window.__MONDO_RETRY_PROJECT__();}else{window.location.reload();}">'+ btnLabel + '</button>' +
+            '<a class="button button-outline" href="/work">Back to our work</a>' +
+            '</div>' +
+            '</div>';
+          existingErr = host.querySelector('.project-error-state');
+        }
+
+        if (existingErr && existingErr.getAttribute('data-focus-managed') !== 'true') {
+          var active = document.activeElement;
+          if (!active || !host.contains(active)) {
+            existingErr.setAttribute('data-focus-managed', 'true');
+            if (typeof existingErr.focus === 'function') {
+              try { existingErr.focus(); } catch (_) { }
+            }
+          }
+        }
+      }
+      window.__MONDO_MOUNT_PILOT_ERROR__ = mountNonDestructivePilotError;
+
+      try {
+        var raw = sessionStorage.getItem('mondo_quiet_mark_pending');
+        var isQuietMarkInbound = false;
+        if (raw) {
+          var isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var isAdmin = window.location.pathname.startsWith('/admin');
+          if (isAdmin) {
+            sessionStorage.removeItem('mondo_quiet_mark_pending');
+          } else {
+            var data = JSON.parse(raw);
+            var currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+            var targetPath = (data && typeof data.to === 'string') ? (data.to.replace(/\/+$/, '') || '/') : '';
+            var isFiniteTs = data && typeof data.ts === 'number' && isFinite(data.ts);
+            var age = isFiniteTs ? Date.now() - data.ts : -1;
+            var isValid = data && typeof data === 'object' && targetPath === currentPath && age >= 0 && age <= 15000;
+
+            if (isValid) {
+              isQuietMarkInbound = true;
+              document.documentElement.style.background = '#000';
+              document.documentElement.classList.add('is-quiet-mark-inbound');
+
+              // Phase 5C.3.3-AQ1-R1 Pilot: Early Adaptive Quiet Mark waiting state hook
+              var qmStart = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+              var earlyQm = {
+                startTime: qmStart,
+                state: 'quiet',
+                breathingAt: null,
+                statusAt: null,
+                reducedMotion: isReduced,
+                breathTimer: null,
+                statusTimer: null,
+                watchdogTimer: null,
+                mountObserver: null,
+                clearTimers: function () {
+                  if (this.breathTimer) { clearTimeout(this.breathTimer); this.breathTimer = null; }
+                  if (this.statusTimer) { clearTimeout(this.statusTimer); this.statusTimer = null; }
+                  if (this.watchdogTimer) { clearTimeout(this.watchdogTimer); this.watchdogTimer = null; }
+                  if (this.mountObserver) { this.mountObserver.disconnect(); this.mountObserver = null; }
+                }
+              };
+              window.__MONDO_EARLY_QM__ = earlyQm;
+
+              function mountEarlyQuietMark() {
+                if (!document.body) return null;
+                var ov = document.getElementById('mondo-quiet-mark');
+                if (!ov) {
+                  ov = document.createElement('div');
+                  ov.id = 'mondo-quiet-mark';
+                  ov.className = 'mondo-quiet-mark';
+                  ov.setAttribute('aria-hidden', earlyQm.state === 'status' ? 'false' : 'true');
+                  ov.setAttribute('data-qm-state', earlyQm.state);
+                  ov.style.opacity = '1';
+                  ov.style.display = 'flex';
+                  ov.innerHTML = '<div class="mondo-quiet-mark__inner">' +
+                    '<div id="mondo-quiet-mark-breath" class="mondo-quiet-mark__breath">' +
+                    '<img id="mondo-quiet-mark-logo" class="mondo-quiet-mark__logo" src="/assets/intro/mondo-white.png" alt="" width="610" height="870" fetchpriority="high" draggable="false" style="opacity: 0; transform: scale(1.0042);" />' +
+                    '</div>' +
+                    '<p id="mondo-quiet-mark-status" class="mondo-quiet-mark__status" role="status" aria-live="polite"></p>' +
+                    '</div>';
+                  var logoEl = ov.querySelector('#mondo-quiet-mark-logo');
+                  bindEarlyLogoReadiness(logoEl, ov);
+                  if (earlyQm.state === 'breathing' || (earlyQm.state === 'status' && !earlyQm.reducedMotion)) {
+                    ov.classList.add('is-qm-breathing');
+                  }
+                  if (earlyQm.state === 'status') {
+                    ov.classList.add('is-qm-status');
+                    var st = ov.querySelector('#mondo-quiet-mark-status');
+                    if (st) {
+                      if (st.textContent !== 'LOADING PROJECT DETAILS\u2026') {
+                        st.textContent = 'LOADING PROJECT DETAILS\u2026';
+                      }
+                      st.classList.add('is-visible');
+                    }
+                  }
+                  document.body.appendChild(ov);
+                }
+                return ov;
+              }
+
+              if (document.body) {
+                mountEarlyQuietMark();
+              } else if (typeof MutationObserver !== 'undefined') {
+                earlyQm.mountObserver = new MutationObserver(function () {
+                  if (document.body) {
+                    earlyQm.mountObserver.disconnect();
+                    earlyQm.mountObserver = null;
+                    mountEarlyQuietMark();
+                  }
+                });
+                earlyQm.mountObserver.observe(document.documentElement, { childList: true });
+              }
+
+              earlyQm.breathTimer = setTimeout(function () {
+                earlyQm.breathTimer = null;
+                if (window.__MONDO_PROJECT_READY__ || earlyQm.state !== 'quiet') return;
+                if (earlyQm.reducedMotion) return;
+                earlyQm.state = 'breathing';
+                earlyQm.breathingAt = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+                document.documentElement.classList.add('is-qm-breathing');
+                var ov = mountEarlyQuietMark();
+                if (ov) {
+                  ov.classList.add('is-qm-breathing');
+                  ov.setAttribute('data-qm-state', 'breathing');
+                }
+              }, 250);
+
+              earlyQm.statusTimer = setTimeout(function () {
+                earlyQm.statusTimer = null;
+                if (window.__MONDO_PROJECT_READY__ || (earlyQm.state !== 'quiet' && earlyQm.state !== 'breathing')) return;
+                earlyQm.state = 'status';
+                earlyQm.statusAt = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+                document.documentElement.classList.add('is-qm-status');
+                var ov = mountEarlyQuietMark();
+                if (ov) {
+                  ov.classList.add('is-qm-status');
+                  ov.setAttribute('aria-hidden', 'false');
+                  ov.setAttribute('data-qm-state', 'status');
+                  var st = document.getElementById('mondo-quiet-mark-status');
+                  if (st) {
+                    if (st.textContent !== 'LOADING PROJECT DETAILS\u2026') {
+                      st.textContent = 'LOADING PROJECT DETAILS\u2026';
+                    }
+                    st.classList.add('is-visible');
+                  }
+                }
+              }, 2500);
+
+              var expectedRaw = raw;
+              earlyQm.watchdogTimer = setTimeout(function() {
+                earlyQm.watchdogTimer = null;
+                if (window.__MONDO_PROJECT_READY__) return;
+                earlyQm.clearTimers();
+                earlyQm.state = 'dismissed';
+                if (window.__MONDO_ADAPTIVE_QM__ && typeof window.__MONDO_ADAPTIVE_QM__.dismiss === 'function') {
+                  window.__MONDO_ADAPTIVE_QM__.dismiss('head_watchdog_4000ms');
+                }
+                document.documentElement.classList.remove('is-quiet-mark-inbound');
+                document.documentElement.classList.remove('is-qm-breathing', 'is-qm-status');
+                document.documentElement.style.background = '';
+                var ov = document.getElementById('mondo-quiet-mark');
+                if (ov) {
+                  ov.style.opacity = '0';
+                  ov.style.display = 'none';
+                  ov.classList.remove('is-qm-breathing', 'is-qm-status');
+                  ov.setAttribute('aria-hidden', 'true');
+                  ov.setAttribute('data-qm-state', 'dismissed');
+                }
+                mountNonDestructivePilotError();
+                try {
+                  var currentRaw = sessionStorage.getItem('mondo_quiet_mark_pending');
+                  if (currentRaw === expectedRaw) {
+                    sessionStorage.removeItem('mondo_quiet_mark_pending');
+                  }
+                } catch (_) { }
+              }, 4000);
+            } else {
+              sessionStorage.removeItem('mondo_quiet_mark_pending');
+            }
+          }
+        }
+
+        // Phase 5C.3.3-R2 / AQ1-R1 Direct Visit & Refresh First-Paint Guard
+        if (!isQuietMarkInbound) {
+          var pilotStart = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+          document.documentElement.style.background = '#000';
+          document.documentElement.classList.add('is-project-pilot-guard');
+
+          function bindShellLogoIfPresent() {
+            var shell = document.getElementById('mondo-loading-shell');
+            if (!shell) return false;
+            var logo = shell.querySelector('.mondo-loading-shell__logo');
+            bindEarlyLogoReadiness(logo, shell);
+            return true;
+          }
+          if (!bindShellLogoIfPresent()) {
+            document.addEventListener('DOMContentLoaded', bindShellLogoIfPresent, { once: true });
+          }
+
+          // Arm 250ms threshold timer to display branded loading shell if JS is delayed
+          var thresholdTimer = setTimeout(function () {
+            thresholdTimer = null;
+            if (window.__MONDO_PROJECT_READY__) return;
+            if (document.documentElement.classList.contains('is-project-pilot-guard')) {
+              if (window.__MONDO_PILOT_GUARD__) window.__MONDO_PILOT_GUARD__.thresholdShown = true;
+              document.documentElement.classList.add('is-project-pilot-active');
+              var shell = document.getElementById('mondo-loading-shell');
+              if (shell) {
+                bindShellLogoIfPresent();
+                shell.classList.add('is-active');
+                shell.setAttribute('aria-hidden', 'false');
+              }
+            }
+          }, 250);
+
+          // Arm 2500ms long-wait status timer for direct visits and refreshes (AQ1-R1-02)
+          var statusTimer = setTimeout(function () {
+            statusTimer = null;
+            if (window.__MONDO_PROJECT_READY__) return;
+            if (document.documentElement.classList.contains('is-project-pilot-guard')) {
+              if (window.__MONDO_PILOT_GUARD__) window.__MONDO_PILOT_GUARD__.statusShown = true;
+              document.documentElement.classList.add('is-project-pilot-active', 'is-project-pilot-status');
+              var shell = document.getElementById('mondo-loading-shell');
+              if (shell) {
+                bindShellLogoIfPresent();
+                shell.classList.add('is-active');
+                shell.setAttribute('aria-hidden', 'false');
+              }
+              var st = document.getElementById('mondo-loading-shell-status');
+              if (st) {
+                if (st.textContent !== 'LOADING PROJECT DETAILS\u2026') {
+                  st.textContent = 'LOADING PROJECT DETAILS\u2026';
+                }
+                st.classList.add('is-visible');
+              }
+            }
+          }, 2500);
+
+          // Independent recovery watchdog (4000ms ceiling)
+          var watchdogTimer = setTimeout(function () {
+            watchdogTimer = null;
+            if (thresholdTimer) { clearTimeout(thresholdTimer); thresholdTimer = null; }
+            if (statusTimer) { clearTimeout(statusTimer); statusTimer = null; }
+            if (document.documentElement.classList.contains('is-project-pilot-guard')) {
+              document.documentElement.classList.remove('is-project-pilot-guard', 'is-project-pilot-active', 'is-project-pilot-status');
+              document.documentElement.style.background = '';
+              var shell = document.getElementById('mondo-loading-shell');
+              if (shell) {
+                shell.classList.remove('is-active', 'is-exiting');
+                shell.setAttribute('aria-hidden', 'true');
+              }
+              var st = document.getElementById('mondo-loading-shell-status');
+              if (st) {
+                st.classList.remove('is-visible');
+                st.textContent = '';
+              }
+              mountNonDestructivePilotError();
+            }
+          }, 4000);
+
+          window.__MONDO_PILOT_GUARD__ = {
+            startTime: pilotStart,
+            thresholdShown: false,
+            statusShown: false,
+            thresholdTimer: thresholdTimer,
+            statusTimer: statusTimer,
+            watchdogTimer: watchdogTimer,
+            clearEarlyTimers: function() {
+              if (thresholdTimer) { clearTimeout(thresholdTimer); thresholdTimer = null; }
+              if (statusTimer) { clearTimeout(statusTimer); statusTimer = null; }
+            },
+            dismiss: function () {
+              if (thresholdTimer) { clearTimeout(thresholdTimer); thresholdTimer = null; }
+              if (statusTimer) { clearTimeout(statusTimer); statusTimer = null; }
+              if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; }
+              document.documentElement.classList.remove('is-project-pilot-guard', 'is-project-pilot-active', 'is-project-pilot-status');
+              document.documentElement.style.background = '';
+              var st = document.getElementById('mondo-loading-shell-status');
+              if (st) {
+                st.classList.remove('is-visible');
+                st.textContent = '';
+              }
+            }
+          };
+        }
+      } catch (_) {
+        try { sessionStorage.removeItem('mondo_quiet_mark_pending'); } catch (_) { }
+      }
+    })();
+  </script>
+  <link id="mondo-main-stylesheet" rel="stylesheet" href="/css/style.css" media="print"
+    onload="this.media='all';if(window.__MONDO_MARK_CSS_READY__)window.__MONDO_MARK_CSS_READY__(this);"
+    onerror="this.media='all';if(window.__MONDO_MARK_CSS_READY__)window.__MONDO_MARK_CSS_READY__(this);" />
 </head>
 
 <body class="antialiased">
@@ -21,7 +827,8 @@
   <header class="site-header">
     <div class="container nav-row">
       <a class="brand" href="/" aria-label="MONDO home">
-        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="42" height="60" />
+        <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="42" height="60"
+          fetchpriority="low" />
         <span class="brand-divider" aria-hidden="true"></span>
         <img src="/assets/mondo-wordmark.svg" alt="MONDO" class="brand-wordmark" width="165" height="35" />
       </a>
@@ -60,6 +867,18 @@
 
   <main id="main" class="container">
     <div id="project-main">
+      <noscript>
+        <link rel="stylesheet" href="/css/style.css" />
+        <div class="project-noscript">
+          <p class="eyebrow"><span class="lime-dot"></span> JAVASCRIPT REQUIRED</p>
+          <h2>To explore project details, please enable JavaScript.</h2>
+          <p class="muted">Or explore our pre-rendered portfolio collection.</p>
+          <a class="button" href="/work">View all work</a>
+        </div>
+      </noscript>
+
+      <div id="project-error-host" class="project-error-host" hidden></div>
+
       <div class="project-intro" id="project-intro-wrap">
         <!-- Rendered by project.js -->
       </div>
@@ -74,7 +893,9 @@
 
       <section class="section">
         <div class="section-heading">
-          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt="" class="mondo-mark mondo-mark--signature" width="28" height="38" /></span>Keep exploring.</h2>
+          <h2><span class="section-signature" aria-hidden="true"><img src="/assets/mondo-mark.webp" alt=""
+                class="mondo-mark mondo-mark--signature" width="28" height="38" loading="lazy"
+                fetchpriority="low" /></span>Keep exploring.</h2>
           <a href="/work" class="text-link">
             All work
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -102,7 +923,8 @@
           </a>
         </div>
         <div class="cta-art" aria-hidden="true">
-          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" width="400" height="570" />
+          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" width="400" height="570" loading="lazy"
+            decoding="async" fetchpriority="low" />
         </div>
       </section>
     </div>
@@ -111,12 +933,14 @@
   <footer class="site-footer container">
     <!-- Integrated Footer Background Mark -->
     <div class="footer-bg-mark" aria-hidden="true">
-      <img src="/assets/mondo-mark.webp" alt="" class="footer-bg-logo" width="633" height="861" decoding="async" />
+      <img src="/assets/mondo-mark.webp" alt="" class="footer-bg-logo" width="633" height="861" decoding="async"
+        loading="lazy" fetchpriority="low" />
     </div>
     <div class="footer-top">
       <div>
         <a class="brand" href="/" aria-label="MONDO home">
-          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="28" height="40" />
+          <img src="/assets/mondo-mark.webp" alt="MONDO Mark" class="brand-mark" width="28" height="40" loading="lazy"
+            decoding="async" fetchpriority="low" />
           <span class="brand-divider" aria-hidden="true"></span>
           <img src="/assets/mondo-wordmark.svg" alt="MONDO" class="brand-wordmark" width="95" height="20" />
         </a>
@@ -146,8 +970,19 @@
     </div>
   </footer>
 
-  <script type="module" src="/js/site.js"></script>
-  <script type="module" src="/js/project.js"></script>
+  <!-- Adaptive Loading Shell (Phase 5C.3.3 Pilot: /work/:slug) -->
+  <div class="mondo-loading-shell" id="mondo-loading-shell" aria-hidden="true" role="status">
+    <div class="mondo-loading-shell__inner">
+      <div class="mondo-loading-shell__logo-stage">
+        <img src="/assets/intro/mondo-white.png" alt="" class="mondo-loading-shell__logo" width="610" height="870"
+          fetchpriority="high" draggable="false" style="opacity: 0;" />
+      </div>
+      <p class="mondo-loading-shell__status" id="mondo-loading-shell-status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <script type="module" src="/js/site.js" id="mondo-site-script" onerror="if(window.__MONDO_ON_SCRIPT_ERROR__)window.__MONDO_ON_SCRIPT_ERROR__('site');"></script>
+  <script type="module" src="/js/project.js" id="mondo-project-script" onerror="if(window.__MONDO_ON_SCRIPT_ERROR__)window.__MONDO_ON_SCRIPT_ERROR__('project');"></script>
 </body>
 
 </html>

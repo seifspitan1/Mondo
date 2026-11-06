@@ -38,11 +38,12 @@ export function renderWorkEmptyState(filter) {
  * @param {string} [filter='All'] - Category filter
  * @param {number|null} [limit=3] - Maximum items to display
  */
-export function renderFilteredProjectsGrid(grid, projects, filter = 'All', limit = 3) {
+export function renderFilteredProjectsGrid(grid, projects, filter = 'All', limit = 3, options = {}) {
   if (!grid) return;
   const displayList = filterProjects(projects, filter, limit);
   if (displayList.length > 0) {
-    grid.innerHTML = displayList.map((p, i) => renderProjectCard(p, i)).join('');
+    const isEagerGrid = typeof options.eager === 'boolean' ? options.eager : (grid.id !== 'selected-work-grid');
+    grid.innerHTML = displayList.map((p, i) => renderProjectCard(p, i, { eager: isEagerGrid ? i < 3 : false })).join('');
   } else {
     grid.innerHTML = renderWorkEmptyState(filter);
   }

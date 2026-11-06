@@ -1,0 +1,9 @@
+# Exclude non-production directories and test artifacts from Vercel deployment uploads
+scratch/
+test/
+MotionReferences/
+docs/
+archive/
+prototypes/
+MONDO_Visual_Correction_Kit/
+*.md

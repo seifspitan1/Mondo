@@ -4,13 +4,9 @@
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
-   0. EXTERNAL FONTS
-   ----------------------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;800;900&display=swap');
-
-/* -----------------------------------------------------------------------------
    1. DESIGN TOKENS
    ----------------------------------------------------------------------------- */
+@import './tokens/fonts.css';
 @import './tokens/colors.css';
 @import './tokens/typography.css';
 @import './tokens/spacing.css';
@@ -41,6 +37,8 @@
    5. FEATURES & OVERLAYS
    ----------------------------------------------------------------------------- */
 @import './features/intro.css';
+@import './features/quiet-mark.css';
+@import './features/loading-shell.css';
 
 /* -----------------------------------------------------------------------------
    6. PAGE-SPECIFIC STYLES

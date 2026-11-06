@@ -30,7 +30,7 @@ test('GET /work serves work portfolio HTML', async () => {
   const res = await fetch(`${baseUrl}/work`);
   assert.equal(res.status, 200);
   const text = await res.text();
-  assert.match(text, /Ideas that<br \/><span>play bigger\.<\/span>/);
+  assert.match(text, /Ideas that<br \s*\/?>\s*<span>play\s+bigger\.<\/span>/);
   assert.match(text, /Rainbow Orchard/);
 });
 

@@ -1,18 +1,20 @@
 import { icons } from '../../shared/icons.js';
 import { escapeHtml } from '../../shared/dom.js';
 
-const LOCAL_PROJECTS = ['rainbow-orchard', 'cat-battle', 'cosmic-egg', 'dragon-escape', 'orchard-upgrade'];
+export const LOCAL_PROJECTS = ['rainbow-orchard', 'cat-battle', 'cosmic-egg', 'dragon-escape', 'orchard-upgrade'];
 
 /**
  * Pure template generator rendering a responsive 16:9 portfolio project card.
  * @param {object} project - Project data record
  * @param {number} [index=0] - Card index used for eager/lazy loading decision
+ * @param {object} [options={}] - Optional rendering configuration
+ * @param {boolean} [options.eager] - Explicit eager loading override
  * @returns {string} HTML string representing the card anchor element
  */
-export function renderProjectCard(project, index = 0) {
+export function renderProjectCard(project, index = 0, options = {}) {
   if (!project) return '';
 
-  const isEager = index < 3;
+  const isEager = typeof options.eager === 'boolean' ? options.eager : index < 3;
   const isLocal = LOCAL_PROJECTS.some((n) => project.image === `/assets/${n}.webp`);
   const srcSet = isLocal ? `srcset="${project.image.replace('.webp', '-small.webp')} 800w, ${project.image} 1600w"` : '';
 

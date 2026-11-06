@@ -57,26 +57,37 @@ export function setupWorkFilters({ root = document, onFilterChange } = {}) {
   });
 }
 
+// Track active async operations for stale request cancellation
+let activeWorkOp = 0;
+
 /**
- * Orchestrator initializing the work portfolio collection page:
- * - Category filter toolbar (All, Thumbnails, Trailers)
- * - Initial grid and project count
- * - API hydration via loadPublicContent
+ * Phase 5C Stage G1: Route Lifecycle Contract — Mount Work Portfolio Page.
+ * Mounts category filters, sets up initial grid, and hydrates projects list.
+ * Safe, idempotent, and cancellation-aware.
  *
- * Idempotent and safe against duplicate execution.
- * @param {object} [options]
- * @param {Document|HTMLElement} [options.root=document]
- * @param {Function} [options.fetchContent=loadPublicContent]
+ * @param {object} [context]
+ * @param {Document|HTMLElement} [context.root=document]
+ * @param {Function} [context.fetchContent=loadPublicContent]
+ * @param {number|string} [context.operationId]
+ * @param {AbortSignal} [context.signal]
  * @returns {Promise<void>}
  */
-export async function initWorkPage({ root = document, fetchContent = loadPublicContent } = {}) {
+export async function mountWork({
+  root = document,
+  fetchContent = loadPublicContent,
+  operationId = null,
+  signal = null
+} = {}) {
   const scopeEl = root.body || (root.getElementById ? root.getElementById('work-grid') : null);
-  if (scopeEl && scopeEl.dataset && scopeEl.dataset.workInitialized === 'true') {
+  if (scopeEl && scopeEl.dataset && scopeEl.dataset.workMounted === 'true') {
     return;
   }
   if (scopeEl && scopeEl.dataset) {
+    scopeEl.dataset.workMounted = 'true';
     scopeEl.dataset.workInitialized = 'true';
   }
+
+  const currentOp = operationId || ++activeWorkOp;
 
   let allProjects = [];
   const grid = root.getElementById ? root.getElementById('work-grid') : root.querySelector('#work-grid');
@@ -90,12 +101,61 @@ export async function initWorkPage({ root = document, fetchContent = loadPublicC
   });
 
   try {
+    if (signal && signal.aborted) return;
     const data = await fetchContent();
+    if (currentOp !== activeWorkOp || (signal && signal.aborted)) {
+      return; // Invalidate stale response
+    }
     if (data.projects && Array.isArray(data.projects)) {
       allProjects = data.projects;
       renderWorkGrid(grid, countEl, allProjects, 'All');
     }
   } catch (err) {
-    console.warn('Using pre-rendered work collection:', err.message);
+    if (currentOp === activeWorkOp) {
+      console.warn('Using pre-rendered work collection:', err.message);
+    }
   }
+}
+
+/**
+ * Phase 5C Stage G1: Route Lifecycle Contract — Unmount Work Portfolio Page.
+ * Releases filter button listeners, invalidates in-flight requests, and clears idempotency flags.
+ *
+ * @param {object} [context]
+ * @param {Document|HTMLElement} [context.root=document]
+ */
+export function unmountWork({ root = document } = {}) {
+  // Invalidate in-flight async operations
+  activeWorkOp++;
+
+  const scopeEl = root.body || (root.getElementById ? root.getElementById('work-grid') : null);
+  if (scopeEl && scopeEl.dataset) {
+    delete scopeEl.dataset.workMounted;
+    delete scopeEl.dataset.workInitialized;
+  }
+
+  // Release filter button listeners
+  const filterBtns = root.querySelectorAll('.filter-list button');
+  filterBtns.forEach((btn) => {
+    delete btn.dataset.workFilterBound;
+    if (btn.parentNode) {
+      btn.replaceWith(btn.cloneNode(true));
+    }
+  });
+}
+
+// Canonical lifecycle aliases for Global Coordinator
+export { mountWork as mount, unmountWork as unmount };
+
+/**
+ * Orchestrator initializing the work portfolio collection page:
+ * Preserved for backward compatibility with direct document loads.
+ *
+ * @param {object} [options]
+ * @param {Document|HTMLElement} [options.root=document]
+ * @param {Function} [options.fetchContent=loadPublicContent]
+ * @returns {Promise<void>}
+ */
+export async function initWorkPage({ root = document, fetchContent = loadPublicContent } = {}) {
+  return mountWork({ root, fetchContent });
 }

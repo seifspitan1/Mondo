@@ -37,6 +37,7 @@ export default async function handler(req, res) {
 
   // 2. ADMIN LIST: GET
   if (method === 'GET') {
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     if (!isAdmin(req)) {
       return res.status(403).json({ error: 'Admin access required.' });
     }

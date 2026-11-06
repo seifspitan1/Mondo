@@ -36,7 +36,7 @@ test('Production Delivery Smoke Tests', async (t) => {
     const res = await fetch(`${baseUrl}/css/style.css`);
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type'), /text\/css/);
-    assert.match(res.headers.get('cache-control'), /public, max-age=3600/);
+    assert.match(res.headers.get('cache-control'), /public, max-age=0, must-revalidate/);
     const body = await res.text();
     assert.ok(body.length > 40000, 'Compiled CSS should be > 40KB minified');
   });
@@ -55,7 +55,7 @@ test('Production Delivery Smoke Tests', async (t) => {
       const res = await fetch(`${baseUrl}/js/${entry}.js`);
       assert.equal(res.status, 200, `Entry /js/${entry}.js must return 200`);
       assert.match(res.headers.get('content-type'), /javascript/);
-      assert.match(res.headers.get('cache-control'), /public, max-age=3600/);
+      assert.match(res.headers.get('cache-control'), /public, max-age=0, must-revalidate/);
       const body = await res.text();
       assert.ok(body.length > 500, `${entry} bundle must have compiled content`);
     }

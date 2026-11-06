@@ -1,0 +1,209 @@
+/* =============================================================================
+   MONDO — Quiet Mark Page Transition (Phase 5B.3B)
+   ============================================================================= */
+
+/**
+ * Full-screen overlay with centered MONDO logo.
+ * - background: pure black #000000
+ * - logo: authentic white MONDO mark
+ * - uses opacity + scale for calm motion
+ * - z-index high enough to cover page content but below any critical modals
+ */
+
+.mondo-quiet-mark {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: #000000;
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  /* Center the logo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Performance */
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  visibility: visible;
+}
+
+/* =============================================================================
+   Inbound Visibility Guard (Phase 5C.2B.1)
+   Prevents destination body content from flashing before overlay is mounted.
+   ============================================================================= */
+html.is-quiet-mark-inbound {
+  background: #000000 !important;
+}
+
+html.is-quiet-mark-inbound body {
+  background: #000000 !important;
+}
+
+html.is-quiet-mark-inbound body > *:not(#mondo-quiet-mark):not(#mondo-intro) {
+  visibility: hidden !important;
+}
+
+/* When actively showing (controlled by JS) */
+.mondo-quiet-mark[style*="opacity: 1"],
+.mondo-quiet-mark[style*="opacity:1"],
+.mondo-quiet-mark[style*="opacity: 0."] {
+  display: flex;
+}
+
+.mondo-quiet-mark__logo {
+  /* Sizing: matched to ~90% of Main Intro prominent centered mark (Phase 5B.3C.3) */
+  height: clamp(290px, 48.6vh, 438px);
+  width: auto;
+  aspect-ratio: 610 / 870;
+  max-width: 55vw;
+  max-height: 48.6vh;
+  /* Initial hidden state */
+  opacity: 0;
+  transform: scale(0.978);
+  /* Performance */
+  will-change: opacity, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* No interaction */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Mobile responsive sizing: matched to Main Intro mobile scaling (w < 700) */
+@media (max-width: 699px) {
+  .mondo-quiet-mark__logo {
+    height: clamp(242px, 37.8vh, 298px);
+    aspect-ratio: 610 / 870;
+    max-width: 55vw;
+    max-height: 37.8vh;
+  }
+}
+
+/* =============================================================================
+   Adaptive Quiet Mark Waiting States (Phase 5C.3.3-AQ1-R1 Pilot: /work/:slug)
+   States: QUIET (0-250ms) -> BREATHING (>250ms) -> STATUS (>2500ms)
+   Uses ONE authentic logo (/assets/intro/mondo-white.png) with isolated motion
+   ============================================================================= */
+
+.mondo-quiet-mark__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mondo-quiet-mark__breath {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.is-logo-ready .mondo-quiet-mark__logo,
+.mondo-quiet-mark__logo.is-decoded {
+  opacity: 1;
+  visibility: visible;
+}
+
+.is-logo-failed .mondo-quiet-mark__logo {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Gentle 450ms onset ramp from stationary QUIET state (scale 1, opacity 1)
+   into Concept C peak (scale 1.015, opacity 1), followed by steady-state
+   2.6s Concept C cycle (1.015 <-> 0.985, opacity 1.00 <-> 0.88) with zero loop snap */
+@keyframes mondo-qm-breathing-onset {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+}
+
+@keyframes mondo-qm-subtle-breathing {
+  0% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.985);
+    opacity: 0.88;
+  }
+  100% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+}
+
+.mondo-quiet-mark.is-qm-breathing .mondo-quiet-mark__breath,
+html.is-qm-breathing .mondo-quiet-mark__breath {
+  animation:
+    mondo-qm-breathing-onset 450ms ease-in-out 0s 1 normal forwards,
+    mondo-qm-subtle-breathing 2.6s ease-in-out 450ms infinite normal forwards;
+}
+
+/* Restrained Status Text for Extended Waits (>2,500ms, D14)
+   Positioned absolutely below the centered logo so it causes zero layout shift */
+.mondo-quiet-mark__status {
+  position: absolute;
+  top: calc(100% + 32px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  width: max-content;
+  max-width: 88vw;
+  min-height: 20px;
+  text-align: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted, #a6adb6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms ease, visibility 300ms ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mondo-quiet-mark.is-qm-status .mondo-quiet-mark__status,
+html.is-qm-status .mondo-quiet-mark__status,
+.mondo-quiet-mark__status.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Reduced motion: disable decorative motion while preserving adaptive pilot waiting state */
+@media (prefers-reduced-motion: reduce) {
+  .mondo-quiet-mark:not([data-qm-state="quiet"]):not([data-qm-state="breathing"]):not([data-qm-state="status"]) {
+    display: none !important;
+    opacity: 0 !important;
+  }
+  .mondo-quiet-mark__breath,
+  .mondo-quiet-mark.is-qm-breathing .mondo-quiet-mark__breath,
+  html.is-qm-breathing .mondo-quiet-mark__breath {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .mondo-quiet-mark__logo {
+    animation: none !important;
+    transition: none !important;
+  }
+  .mondo-quiet-mark__status {
+    transition: none !important;
+  }
+}
+

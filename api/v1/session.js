@@ -5,6 +5,9 @@ import { getEnquiries } from '../../src/services/enquiry.service.js';
 import { getActivityMetrics } from '../../src/services/activity.service.js';
 
 export default async function handler(req, res) {
+  // Admin session responses are strictly private and uncacheable
+  res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed.' });

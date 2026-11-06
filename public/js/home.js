@@ -1,6 +1,6 @@
-import { initHome } from './features/home/home-page.js';
+import { initHome, mountHome, unmountHome, mount, unmount } from './features/home/home-page.js';
 
-export { initHome };
+export { initHome, mountHome, unmountHome, mount, unmount };
 
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {

@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       getSettings()
     ]);
 
-    // Public cache header: 60s max-age, stale-while-revalidate 300s
+    // Public cache header: 60s shared CDN max-age, stale-while-revalidate 300s
     res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     return res.status(200).json({
       ok: true,
