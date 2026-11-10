@@ -15,9 +15,9 @@
   --space-96: 96px;
 
 
-  /* Hero subtle background mark controls (customizable) */
-  --hero-logo-size: clamp(560px, 48vw, 760px);
-  --hero-logo-opacity: 0.09;
+  /* Hero subtle background mark controls (Concept #3: Oversized Cropped Brand Mark) */
+  --hero-logo-size: clamp(620px, 45vw, 660px);
+  --hero-logo-opacity: 0.08;
   --hero-logo-top: 48%;
   --hero-logo-right: -60px;
   --hero-logo-bottom: auto;

@@ -27,27 +27,21 @@
   }
 
   .hero {
-    --hero-logo-size: clamp(320px, 44vw, 440px);
-    --hero-logo-opacity: 0.07;
-    --hero-logo-top: auto;
-    --hero-logo-bottom: 20px;
-    --hero-logo-right: -15px;
-    --hero-logo-transform: none;
-    grid-template-columns: 1fr;
-    min-height: auto;
+    --hero-logo-size: clamp(450px, 44vw, 530px);
+    --hero-logo-opacity: 0.075;
+    --hero-logo-top: 48%;
+    --hero-logo-bottom: auto;
+    --hero-logo-right: -50px;
+    --hero-logo-transform: translateY(-50%);
+    min-height: calc(100vh - 86px - 65px);
+    min-height: calc(100dvh - 86px - 65px);
     padding-top: 24px;
     padding-bottom: 32px;
-    gap: 28px;
+    overflow: hidden;
   }
 
   .hero-copy {
     max-width: 100%;
-  }
-
-  .hero-art {
-    width: 88%;
-    margin-inline: auto;
-    overflow: hidden;
   }
 
   .work-grid {
@@ -61,13 +55,18 @@
   }
 
   .service-row {
-    grid-template-columns: 36px 1fr 1fr 24px;
-    gap: 18px;
+    grid-template-columns: 36px minmax(200px, 1fr) minmax(240px, 1.2fr) 32px;
+    gap: 20px;
+    padding: 24px 12px;
+  }
+
+  .service-title h3 {
+    font-size: 21px;
   }
 
   .process-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px;
+    --process-gap: 20px;
+    gap: var(--process-gap);
   }
 
   .faq-section {
@@ -75,6 +74,10 @@
     gap: 40px;
     padding-top: 64px;
     padding-bottom: 56px;
+  }
+
+  .faq-section > div:first-child {
+    position: static;
   }
 
   .start-layout {
@@ -107,6 +110,19 @@
 
 /* Header Collapse Breakpoint (max-width: 820px) */
 @media (max-width: 820px) {
+  .hero {
+    --hero-logo-size: clamp(320px, 44vw, 380px);
+    --hero-logo-opacity: 0.065;
+    --hero-logo-top: 48%;
+    --hero-logo-right: -35px;
+    --hero-logo-transform: translateY(-50%);
+    min-height: auto;
+  }
+
+  html {
+    scroll-padding-top: 88px;
+  }
+
   .nav-row {
     height: 72px;
   }
@@ -125,7 +141,7 @@
   }
 
   .desktop-cta {
-    display: none;
+    display: none !important;
   }
 
   .menu-toggle {
@@ -144,7 +160,7 @@
     top: 71px;
     background-color: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
-    padding: 24px;
+    padding: 16px 24px 20px;
     margin: 0;
     flex-direction: column;
     align-items: stretch;
@@ -161,10 +177,80 @@
     border-bottom: 1px solid var(--color-border);
   }
 
-  .main-nav .mobile-cta {
-    display: inline-flex;
-    margin-top: 20px;
-    justify-content: space-between;
+  .main-nav>a:not(.button):last-child {
+    border-bottom: none;
+  }
+
+  .main-nav .mobile-cta,
+  .mobile-cta {
+    display: none !important;
+  }
+
+  /* Process Section — Vertical Timeline for Viewports <= 820px */
+  .process-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 24px;
+    padding-left: 36px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .process-grid>article {
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 36px;
+  }
+
+  .process-grid>article:last-child {
+    padding-bottom: 4px;
+  }
+
+  /* Vertical timeline line connecting to next step */
+  .process-grid>article:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    bottom: -16px;
+    left: -28px;
+    width: 1px;
+    height: auto;
+    background: var(--color-border);
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  /* Minimal geometric vertical timeline node */
+  .process-grid>article::before {
+    top: 16px;
+    left: -28px;
+    width: 9px;
+    height: 9px;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .step-top {
+    margin-bottom: 12px;
+  }
+
+  .step-top>span {
+    font-size: 32px;
+  }
+
+  .step-top>svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+  }
+
+  .process-grid h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .process-grid p {
+    font-size: 13.5px;
+    line-height: 1.65;
   }
 }
 
@@ -179,13 +265,13 @@
   }
 
   .hero {
-    --hero-logo-size: clamp(220px, 52vw, 280px);
-    --hero-logo-opacity: 0.07;
-    --hero-logo-top: 10px;
+    --hero-logo-size: clamp(190px, 50vw, 240px);
+    --hero-logo-opacity: 0.06;
+    --hero-logo-top: 48%;
     --hero-logo-bottom: auto;
-    --hero-logo-right: -20px;
-    --hero-logo-transform: none;
-    overflow-x: clip;
+    --hero-logo-right: -25px;
+    --hero-logo-transform: translateY(-50%);
+    overflow: hidden;
   }
 
   .hero h1 {
@@ -203,20 +289,10 @@
     width: 100%;
   }
 
-  .hero-art {
-    width: 100%;
-    overflow: hidden;
-    aspect-ratio: 1.25;
-  }
-
-  .hero-art-note {
-    display: none;
-  }
-
   .discipline-bar {
     padding: 16px 0;
     justify-content: center;
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .discipline-bar>span {
@@ -234,25 +310,84 @@
     gap: 28px;
   }
 
+  /* Packages Section — Mobile Refinements */
+  .package-card {
+    padding: 26px 20px;
+  }
+
+  .package-card > p {
+    min-height: auto;
+  }
+
+  .package-price {
+    font-size: 24px;
+    min-height: auto;
+    padding-block: 18px;
+  }
+
+  /* FAQ Section — Mobile Refinements */
+  .faq-list summary {
+    font-size: 14.5px;
+    padding: 18px 0;
+    gap: 16px;
+  }
+
+  .faq-list details[open] summary {
+    padding-bottom: 10px;
+  }
+
+  .faq-list details p {
+    font-size: 13.5px;
+    line-height: 1.65;
+    padding: 0 8px 20px 0;
+  }
+
   .service-row {
-    grid-template-columns: 24px 1fr 20px;
-    gap: 14px;
-    padding-block: 22px;
+    grid-template-columns: 24px 1fr 28px;
+    gap: 12px;
+    padding: 20px 10px;
+    align-items: center;
+  }
+
+  .service-number {
+    font-size: 12px;
+  }
+
+  .service-title {
+    gap: 12px;
+  }
+
+  .service-title>svg {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+  }
+
+  .service-title h3 {
+    font-size: 19px;
+    white-space: nowrap;
   }
 
   .service-copy {
-    grid-column: 2;
+    grid-column: 2 / -1;
     grid-row: 2;
+    padding-top: 2px;
+  }
+
+  .service-copy h4 {
+    font-size: 14px;
+  }
+
+  .service-copy p {
+    font-size: 13px;
+    line-height: 1.6;
   }
 
   .service-arrow {
     grid-column: 3;
     grid-row: 1;
-  }
-
-  .process-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    width: 30px;
+    height: 30px;
   }
 
   .cta-banner {
@@ -287,8 +422,16 @@
     gap: 28px;
   }
 
+  .start-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-top: 32px;
+    padding-bottom: 56px;
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .enquiry-form {
@@ -330,7 +473,7 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    font-size: 10px;
+    font-size: 11px;
     padding: 8px;
   }
 
@@ -375,10 +518,17 @@
     width: calc(100% - 28px);
   }
 
+  .enquiry-form {
+    padding: 20px 16px;
+  }
+
   .hero {
-    --hero-logo-size: 220px;
+    --hero-logo-size: 180px;
     --hero-logo-opacity: 0.05;
-    --hero-logo-right: -5px;
+    --hero-logo-top: 48%;
+    --hero-logo-bottom: auto;
+    --hero-logo-right: -20px;
+    --hero-logo-transform: translateY(-50%);
   }
 
   .hero h1 {
@@ -397,6 +547,37 @@
 
   .filter-list button {
     padding-inline: 12px;
+  }
+
+  .service-row {
+    padding: 18px 6px;
+    gap: 10px;
+  }
+
+  .service-title h3 {
+    font-size: 17px;
+  }
+
+  .service-title>svg {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+  }
+
+  .process-grid {
+    padding-left: 28px;
+  }
+
+  .process-grid>article:not(:last-child)::after {
+    left: -22px;
+  }
+
+  .process-grid>article::before {
+    left: -22px;
+  }
+
+  .step-top>span {
+    font-size: 28px;
   }
 }
 

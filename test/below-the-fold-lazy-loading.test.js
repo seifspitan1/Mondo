@@ -16,17 +16,16 @@ const publicDir = path.join(rootDir, 'public');
 describe('MONDO Phase 5D-C.2D: Below-the-Fold Lazy Loading & Initial Image Reduction', () => {
 
   describe('1. Critical Above-the-Fold Image Protection', () => {
-    it('Homepage hero artwork cards in .hero-frame maintain loading="eager"', () => {
+    it('Homepage hero contains no project showcase thumbnails or .hero-art stack', () => {
       const homeHtml = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
-      const heroArtMatch = homeHtml.match(/<div class="hero-art">([\s\S]*?)<\/div>\s*<\/section>/);
-      assert.ok(heroArtMatch, 'Must find .hero-art container');
-      const heroArtHtml = heroArtMatch[1];
-      const imgTags = heroArtHtml.match(/<img[^>]+>/g) || [];
-      assert.equal(imgTags.length, 3, 'Must find 3 hero-frame images');
-      for (const tag of imgTags) {
-        assert.ok(tag.includes('loading="eager"'), `Hero-frame image must be loading="eager": ${tag}`);
-        assert.equal(tag.includes('loading="lazy"'), false, `Hero-frame image must NOT be loading="lazy": ${tag}`);
-      }
+      const heroMatch = homeHtml.match(/<section class="hero">([\s\S]*?)<\/section>/);
+      assert.ok(heroMatch, 'Must find .hero container');
+      const heroHtml = heroMatch[1];
+      assert.equal(heroHtml.includes('hero-art'), false, 'Hero must not contain .hero-art container');
+      assert.equal(heroHtml.includes('hero-frame'), false, 'Hero must not contain .hero-frame elements');
+      assert.equal(heroHtml.includes('rainbow-orchard.webp'), false, 'Hero must not contain rainbow-orchard thumbnail');
+      assert.equal(heroHtml.includes('cat-battle.webp'), false, 'Hero must not contain cat-battle thumbnail');
+      assert.equal(heroHtml.includes('cosmic-egg.webp'), false, 'Hero must not contain cosmic-egg thumbnail');
     });
 
     it('Project detail hero image (#project-media img) never has loading="lazy"', () => {
