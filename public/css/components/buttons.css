@@ -9,16 +9,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   box-sizing: border-box;
   isolation: isolate;
   min-height: var(--control-h);
   max-width: 100%;
-  padding: 12px 55px;
+  padding: 12px 28px 12px 24px;
   background-color: var(--color-bg);
   color: var(--color-text);
   border-top: 1px solid var(--color-text);
   border-bottom: 1px solid var(--color-text);
-  border-left: none;
+  border-left: 1px solid var(--color-text);
   border-right: none;
   border-radius: 0;
   font-family: var(--font-body);
@@ -29,26 +30,20 @@
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
   transition: filter 0.16s ease-out, transform 0.16s ease-out;
 }
 
-/* Primary left facet module (49x58) */
+/* Remove competing left decorative facet shapes */
 .button::before,
-.mondo-button::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  width: calc(var(--control-h) * 49 / 58);
-  background: url('/assets/facet-button-left.svg') no-repeat left top / contain;
-  pointer-events: none;
-  z-index: 2;
+.mondo-button::before,
+.button-outline::before,
+.mondo-button--secondary::before,
+.button-small::before {
+  display: none !important;
 }
 
-/* Primary right facet module (46x58) */
+/* Standardized geometric ornament on the right edge */
 .button::after,
 .mondo-button::after {
   content: "";
@@ -57,8 +52,8 @@
   top: 0;
   bottom: 0;
   height: 100%;
-  width: calc(var(--control-h) * 46 / 58);
-  background: url('/assets/facet-button-right.svg') no-repeat right top / contain;
+  width: 15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none' preserveAspectRatio='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='%23F5F7FA' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat right top / 15px 100%;
   pointer-events: none;
   z-index: 2;
 }
@@ -66,6 +61,11 @@
 .button:hover,
 .mondo-button:hover {
   filter: drop-shadow(0 0 6px rgba(217, 240, 255, 0.40));
+}
+
+.button:hover::after,
+.mondo-button:hover::after {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none' preserveAspectRatio='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='%23EDF8FF' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat right top / 15px 100%;
 }
 
 .button:active,
@@ -88,33 +88,19 @@
   filter: none;
 }
 
-/* Secondary Button (quieter, 36x50 leading module, quiet contour trailing edge) */
+/* Secondary Button (standardized right ornament reference) */
 .button-outline,
 .mondo-button--secondary {
   --control-h: 50px;
   min-height: var(--control-h);
-  padding-block: 12px;
-  padding-inline: 48px 23px;
+  padding: 12px 28px 12px 24px;
+  gap: 12px;
   background-color: var(--color-bg);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
   border-right: none;
-  border-left: none;
-  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
-}
-
-.button-outline::before,
-.mondo-button--secondary::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  height: 100%;
-  width: calc(var(--control-h) * 36 / 50);
-  background: url('/assets/facet-button-secondary-left.svg') no-repeat left top / contain;
-  pointer-events: none;
-  z-index: 2;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
 }
 
 .button-outline::after,
@@ -126,7 +112,7 @@
   bottom: 0;
   height: 100%;
   width: 15px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(245,247,250,0.45)'/%3E%3C/svg%3E") no-repeat right top / contain;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none' preserveAspectRatio='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(245,247,250,0.45)' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat right top / 15px 100%;
   pointer-events: none;
   z-index: 2;
 }
@@ -140,25 +126,17 @@
 
 .button-outline:hover::after,
 .mondo-button--secondary:hover::after {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(237,248,255,0.75)'/%3E%3C/svg%3E") no-repeat right top / contain;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 50' fill='none' preserveAspectRatio='none'%3E%3Cpath d='M0 .5H14.5V37.5L2.5 49.5H0' stroke='rgba(237,248,255,0.75)' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat right top / 15px 100%;
 }
 
 /* Small button variant for headers, toolbars */
 .button-small {
   --control-h: 44px;
   min-height: var(--control-h);
-  padding-block: 8px;
-  padding-inline: 42px;
+  padding: 8px 24px 8px 18px;
   font-size: 13px;
-  clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 11px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 11px);
-}
-
-.button-small::before {
-  width: calc(var(--control-h) * 49 / 58);
-}
-
-.button-small::after {
-  width: calc(var(--control-h) * 46 / 58);
+  gap: 8px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%);
 }
 
 /* Explicit kit child-layer compatibility if used in templates */
@@ -188,17 +166,11 @@
 }
 
 .mondo-button__left {
-  left: 0;
-  top: 0;
-  height: var(--control-h);
-  width: calc(var(--control-h) * 49 / 58);
+  display: none !important;
 }
 
 .mondo-button__right {
-  right: 0;
-  top: 0;
-  height: var(--control-h);
-  width: calc(var(--control-h) * 46 / 58);
+  display: none !important;
 }
 
 .mondo-button__end {

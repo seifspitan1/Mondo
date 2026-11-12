@@ -10,11 +10,20 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
+  scroll-padding-top: 104px;
   background-color: var(--color-bg);
   color: var(--color-text);
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
 }
 
 body {
@@ -26,7 +35,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   position: relative;
 }
@@ -109,4 +118,3 @@ select:focus-visible {
 .skip-link:focus {
   top: 14px;
 }
-
