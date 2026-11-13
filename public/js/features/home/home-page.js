@@ -111,6 +111,26 @@ export async function mountHome({
       console.warn('Using server-rendered home defaults:', err.message);
     }
   }
+
+  // Content readiness: ensure anchor target lands accurately after dynamic content renders
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    const targetEl = root.getElementById ? root.getElementById(targetId) : (root.querySelector ? root.querySelector(`#${CSS.escape(targetId)}`) : null);
+    if (targetEl) {
+      const header = root.querySelector ? root.querySelector('.site-header') : null;
+      const headerHeight = header ? (header.offsetHeight || header.getBoundingClientRect().height) : (window.innerWidth <= 820 ? 73 : 87);
+      const isMobile = window.innerWidth <= 820;
+      const expectedClearance = isMobile ? 20 : 28;
+      const visibleEl = (targetEl.querySelector && targetEl.querySelector('.eyebrow, .section-heading, h1, h2, h3')) || targetEl;
+      const expectedTop = headerHeight + expectedClearance;
+      const actualTop = visibleEl.getBoundingClientRect().top;
+      if (Math.abs(actualTop - expectedTop) > 2) {
+        if (typeof window.__MONDO_SCROLL_TO_ANCHOR__ === 'function') {
+          window.__MONDO_SCROLL_TO_ANCHOR__(window.location.hash, { smooth: false });
+        }
+      }
+    }
+  }
 }
 
 /**

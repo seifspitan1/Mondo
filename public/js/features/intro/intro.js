@@ -408,6 +408,12 @@ export function initIntro() {
 
     overlay.classList.add('mondo-intro--done');
     overlay.remove();
+
+    if (typeof window !== 'undefined' && window.location.hash) {
+      if (typeof window.__MONDO_SCROLL_TO_ANCHOR__ === 'function') {
+        window.__MONDO_SCROLL_TO_ANCHOR__(window.location.hash, { smooth: true });
+      }
+    }
   }
 
   function onKey(e) {

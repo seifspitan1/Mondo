@@ -823,6 +823,9 @@ function handleClick(e) {
     if (!hash) {
       e.preventDefault();
       if (typeof window !== 'undefined' && window.scrollY > 0) {
+        if (typeof window.__MONDO_STOP_INERTIA__ === 'function') {
+          window.__MONDO_STOP_INERTIA__();
+        }
         window.scrollTo({ top: 0, behavior: isReduced ? 'auto' : 'smooth' });
         if (location.hash && history.pushState) {
           history.pushState(null, '', location.pathname + location.search);
@@ -832,22 +835,11 @@ function handleClick(e) {
     }
 
     // Case B: Link targets a section anchor with hash (e.g. /#services, /#packages, #process)
-    const targetId = decodeURIComponent(hash.slice(1));
-    const targetEl = targetId
-      ? (document.getElementById(targetId) || document.querySelector(`[name="${CSS.escape(targetId)}"]`))
-      : null;
-
-    if (targetEl) {
-      e.preventDefault();
-      if (location.hash !== hash) {
-        if (typeof history !== 'undefined' && typeof history.pushState === 'function') {
-          history.pushState(null, '', hash);
-        } else {
-          location.hash = hash;
-        }
+    if (typeof window !== 'undefined' && typeof window.__MONDO_SCROLL_TO_ANCHOR__ === 'function') {
+      if (window.__MONDO_SCROLL_TO_ANCHOR__(hash, { smooth: true, updateHistory: true })) {
+        e.preventDefault();
+        return;
       }
-      targetEl.scrollIntoView({ behavior: isReduced ? 'auto' : 'smooth' });
-      return;
     }
 
     // Otherwise allow normal native fragment navigation to proceed
@@ -1193,7 +1185,11 @@ export function initQuietMark() {
         const scheduleInbound = () => {
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-              playInbound();
+              playInbound().then(() => {
+                if (typeof window !== 'undefined' && window.location.hash && typeof window.__MONDO_SCROLL_TO_ANCHOR__ === 'function') {
+                  window.__MONDO_SCROLL_TO_ANCHOR__(window.location.hash, { smooth: false });
+                }
+              });
             });
           });
         };

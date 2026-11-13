@@ -1,34 +1,269 @@
 /* =============================================================================
    MONDO DESIGN SYSTEM — WORK COLLECTION PAGE
+   Design Batch 04: Visual Refinements & Editorial Layout
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
-   16. DETAIL & STANDALONE PAGES
+   1. PAGE INTRODUCTION (TASK 1)
    ----------------------------------------------------------------------------- */
 .page-intro {
-  padding-top: 76px;
-  padding-bottom: 56px;
+  padding-top: clamp(36px, 4.5vw, 54px);
+  padding-bottom: clamp(24px, 2.8vw, 36px);
 }
 
 .page-intro .eyebrow {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .page-intro h1 {
-  font-size: clamp(52px, 6.5vw, 92px);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(42px, 5.2vw, 76px);
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
-.page-intro>p:last-child {
-  font-size: 16px;
+.page-intro > p:last-child {
+  font-size: 15.5px;
+  line-height: 1.65;
   color: var(--color-muted);
-  margin-top: 24px;
-  line-height: 1.7;
+  margin-top: 18px;
+  max-width: 480px;
 }
 
+/* Desktop Editorial Introduction Alignment */
+@media (min-width: 960px) {
+  .page-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
+    grid-template-areas:
+      "eyebrow eyebrow"
+      "title desc";
+    align-items: end;
+    column-gap: 48px;
+    row-gap: 16px;
+    padding-top: 48px;
+    padding-bottom: 36px;
+  }
+
+  .page-intro .eyebrow {
+    grid-area: eyebrow;
+    margin-bottom: 0;
+  }
+
+  .page-intro h1 {
+    grid-area: title;
+  }
+
+  .page-intro > p:last-child {
+    grid-area: desc;
+    margin-top: 0;
+    padding-bottom: 6px;
+    justify-self: end;
+    max-width: 420px;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   2. WORK TOOLBAR & CONTROLS
+   ----------------------------------------------------------------------------- */
 .work-page-grid {
   margin-bottom: 80px;
 }
 
+.work-page-grid .work-toolbar {
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.work-page-grid .work-toolbar > .muted {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+/* -----------------------------------------------------------------------------
+   3. EDITORIAL GALLERY GRID (TASK 2)
+   ----------------------------------------------------------------------------- */
 .work-page-grid .work-grid {
-  row-gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 32px 24px;
+}
+
+/* Large Desktop Editorial Layout: 2 Feature Cards + 3 Gallery Cards */
+@media (min-width: 1024px) {
+  .work-page-grid .work-grid > .project-card:nth-child(1),
+  .work-page-grid .work-grid > .project-card:nth-child(2) {
+    grid-column: span 6;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(n + 3) {
+    grid-column: span 4;
+  }
+
+  /* Feature showcase cards metadata hierarchy */
+  .work-page-grid .work-grid > .project-card:nth-child(1) .project-meta,
+  .work-page-grid .work-grid > .project-card:nth-child(2) .project-meta {
+    padding: 18px 52px 18px 22px;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) .project-meta h3,
+  .work-page-grid .work-grid > .project-card:nth-child(2) .project-meta h3 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) .project-meta p,
+  .work-page-grid .work-grid > .project-card:nth-child(2) .project-meta p {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) .concept-label,
+  .work-page-grid .work-grid > .project-card:nth-child(2) .concept-label {
+    bottom: 14px;
+    left: 14px;
+    padding: 6px 10px;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+  }
+}
+
+/* Tablet Layout: Lead Card + 2x2 Grid (640px to 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .work-page-grid .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(n + 2) {
+    grid-column: span 1;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) .project-meta {
+    padding: 16px 52px 16px 20px;
+  }
+
+  .work-page-grid .work-grid > .project-card:nth-child(1) .project-meta h3 {
+    font-size: 18px;
+  }
+}
+
+/* Mobile Layout: Single Column (max-width: 639px) */
+@media (max-width: 639px) {
+  .work-page-grid .work-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .work-page-grid .work-grid > .project-card {
+    grid-column: 1 / -1;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   4. CARD ANATOMY & HOVER REFINEMENT (TASK 3)
+   ----------------------------------------------------------------------------- */
+.work-page-grid .project-card {
+  transition:
+    border-color 0.24s ease-out,
+    filter 0.24s ease-out,
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, border-color;
+}
+
+.work-page-grid .project-cover {
+  position: relative;
+  overflow: hidden;
+}
+
+.work-page-grid .project-cover > img {
+  transform: scale(1.001);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.work-page-grid .project-meta h3 {
+  transition: color 0.2s ease-out;
+}
+
+.work-page-grid .project-meta > svg {
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s ease-out,
+    filter 0.2s ease-out;
+}
+
+.work-page-grid .project-view {
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+/* Hover States (Mouse & Fine Pointer) */
+@media (hover: hover) {
+  .work-page-grid .project-card:hover {
+    border-color: rgba(237, 248, 255, 0.42);
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 12px rgba(217, 240, 255, 0.18));
+    transform: translateY(-3px);
+  }
+
+  .work-page-grid .project-card:hover .project-cover > img {
+    transform: scale(1.04);
+  }
+
+  .work-page-grid .project-card:hover .project-meta h3 {
+    color: var(--color-ice);
+  }
+
+  .work-page-grid .project-card:hover .project-meta > svg {
+    color: var(--color-ice);
+    transform: translate(3px, -3px);
+    filter: drop-shadow(0 0 6px rgba(217, 240, 255, 0.35));
+  }
+
+  .work-page-grid .project-card:hover .project-view {
+    color: var(--color-ice);
+    border-color: rgba(237, 248, 255, 0.35);
+  }
+}
+
+/* Focus Visible Accessibility */
+.work-page-grid .project-card:focus-visible {
+  outline: 2px solid var(--color-ice);
+  outline-offset: 4px;
+  border-color: var(--color-ice);
+  transform: translateY(-2px);
+}
+
+.work-page-grid .project-card:focus-visible .project-meta h3 {
+  color: var(--color-ice);
+}
+
+.work-page-grid .project-card:focus-visible .project-meta > svg {
+  color: var(--color-ice);
+  transform: translate(3px, -3px);
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .work-page-grid .project-card,
+  .work-page-grid .project-cover > img,
+  .work-page-grid .project-meta > svg,
+  .work-page-grid .project-view {
+    transition: none !important;
+    transform: none !important;
+  }
 }
